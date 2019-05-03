@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="grid-container">
       <Navigation />
-      <div>фывафва</div>
+      <div className="main">фывафва</div>
     </div>
   );
 }

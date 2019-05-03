@@ -52,28 +52,28 @@ body {
 .grid-container {
   display: grid;
   grid-template-areas:
-    "gif mai mai mai"
-    " . authors find find"
-    ". list . . ";
+    "g-logo g-banner g-banner g-banner"
+    ". g-authors g-find g-find"
+    ". g-main . .";
   grid-gap: 15px;
   padding: 0px;
 }
-.item1 {
-  grid-area: mai;
+.banner {
+  grid-area: g-banner;
 }
-.item2 {
-  grid-area: gif;
+.logo {
+  grid-area: g-logo;
 }
-.item3 {
-  grid-area: list;
+.main {
+  grid-area: g-main;
 }
-.item4 {
-  grid-area: find;
+.find {
+  grid-area: g-find;
   display: flex;
   justify-content: flex-end;
 }
 
-.item4 > form {
+.find > form {
   display: inline-block;
   height: 25px;
   padding: 10px;
@@ -82,7 +82,8 @@ body {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4) inset,
     0 1px 0 rgba(255, 255, 255, 0.2);
 }
-.item4 button {
+
+.find button {
   display: inline-block;
   height: 45px;
   padding: 10px;
@@ -92,43 +93,12 @@ body {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4) inset,
     0 1px 0 rgba(255, 255, 255, 0.2);
 }
+
+.authors {
+  grid-area: g-authors;
+}
 .item5 {
   grid-area: footer;
   margin-left: 250px;
   color: gray;
-}
-.item7 {
-  grid-area: authors;
-}
-
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-}
-.popup {
-  display: none;
-}
-.open {
-  display: block !important;
-}
-
-.modal {
-  position: fixed;
-  z-index: 200;
-  top: 20%;
-  left: 30%;
-  width: 40%;
-  border-radius: 10px;
-  background: rgb(197, 208, 231);
-  padding: 1rem;
-  border: 1px solid #ccc;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-}
-
-#pic {
 }

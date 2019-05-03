@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Signup.css";
 
-class Modal extends Component {
+class Signup extends Component {
   render() {
     return (
       <React.Fragment>
@@ -27,4 +27,4 @@ class Modal extends Component {
   }
 }
 
-export default Modal;
+export default Signup;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import logo from "./logo.gif";
-import Modal from "../Signup/Signup";
+import Signup from "../Signup/Signup";
 class Navigation extends Component {
   state = { isVisible: false };
   showModal = () => {
@@ -12,8 +12,8 @@ class Navigation extends Component {
   render() {
     return (
       <React.Fragment>
-        <img className="item2" src={logo} alt={"logo"} />
-        <div className="item1">
+        <img className="logo" src={logo} alt={"logo"} />
+        <div className="banner">
           <h1 className="center">
             Московский авиацонный институт
             <br /> (национальный иследовательский университет)
@@ -21,17 +21,17 @@ class Navigation extends Component {
           <h2 className="center">
             Кафедра 304 "Вычислительные машины, системы и сети"
           </h2>
-          <h2 className="h3">Список авторов</h2>
-          <div className="item4">
-            <button name="registr" id="registr" onClick={this.showModal}>
-              Войти
-            </button>
-            <form>
-              <input type="text" name="search" placeholder="Поиск.." />
-            </form>
-          </div>
-          {this.state.isVisible ? <Modal hide={this.hideModal} /> : null}
         </div>
+        <h2 className="authors h3">Список авторов</h2>
+        <div className="find">
+          <button name="registr" id="registr" onClick={this.showModal}>
+            Войти
+          </button>
+          <form>
+            <input type="text" name="search" placeholder="Поиск.." />
+          </form>
+        </div>
+        {this.state.isVisible ? <Signup hide={this.hideModal} /> : null}
       </React.Fragment>
     );
   }
