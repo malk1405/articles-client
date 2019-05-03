@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import "./Signup.css";
+import "../Signup.css";
 
-class Signup extends Component {
+class Form extends Component {
   state = { name: "", lastname: "", email: "", password: "" };
   onEdit = event => {
     this.setState({ [event.target.id]: event.target.value });
@@ -62,4 +62,4 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+export default Form;

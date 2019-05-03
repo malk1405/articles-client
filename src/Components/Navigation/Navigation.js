@@ -1,16 +1,9 @@
 import React, { Component } from "react";
 import { AuthContext } from "../../Context/auth";
-import Signup from "../Signup/Signup";
+import Registration from "../Registration/Registration";
 import logo from "./logo.gif";
 
 class Navigation extends Component {
-  state = { isVisible: false };
-  showModal = () => {
-    this.setState({ isVisible: true });
-  };
-  hideModal = () => {
-    this.setState({ isVisible: false });
-  };
   render() {
     return (
       <React.Fragment>
@@ -33,9 +26,7 @@ class Navigation extends Component {
                   user.lastname
                 }`}</button>
               ) : (
-                <button name="registr" id="registr" onClick={this.showModal}>
-                  Войти
-                </button>
+                <Registration />
               )
             }
           </AuthContext.Consumer>
@@ -43,11 +34,6 @@ class Navigation extends Component {
             <input type="text" name="search" placeholder="Поиск.." />
           </form>
         </div>
-        {this.state.isVisible ? (
-          <AuthContext.Consumer>
-            {({ login }) => <Signup hide={this.hideModal} login={login} />}
-          </AuthContext.Consumer>
-        ) : null}
       </React.Fragment>
     );
   }
