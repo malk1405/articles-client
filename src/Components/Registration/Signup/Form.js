@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../Signup.css";
+import axios from "axios";
 
 class Form extends Component {
   state = { name: "", lastname: "", email: "", password: "" };
@@ -9,8 +10,10 @@ class Form extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    console.log(this.state);
-    this.props.login(this.state);
+    const { name, lastname } = this.state;
+    axios.post("/api/authors", { name, lastname }).then(({ data }) => {
+      this.props.login(data);
+    });
     this.props.hide();
   };
   render() {
