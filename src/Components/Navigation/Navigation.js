@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import logo from "./MAI1.gif";
-import Modal from "./modal";
+import logo from "./logo.gif";
+import Modal from "../Signup/Signup";
 class Navigation extends Component {
   state = { isVisible: false };
   showModal = () => {
