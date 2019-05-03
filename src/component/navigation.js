@@ -12,11 +12,11 @@ class Navigation extends Component {
   render() {
     return (
       <React.Fragment>
-        <img className="item2" scr={logo} alt={"logo"} />
+        <img className="item2" src={logo} alt={"logo"} />
         <div className="item1">
           <h1 className="center">
-            Московский авиацонный институт<br /> (национальный иследовательский
-            университет)
+            Московский авиацонный институт
+            <br /> (национальный иследовательский университет)
           </h1>
           <h2 className="center">
             Кафедра 304 "Вычислительные машины, системы и сети"
