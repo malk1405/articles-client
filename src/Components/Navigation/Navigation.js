@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import logo from "./logo.gif";
+import { AuthContext } from "../../Context/auth";
 import Signup from "../Signup/Signup";
+import logo from "./logo.gif";
+
 class Navigation extends Component {
   state = { isVisible: false };
   showModal = () => {
@@ -24,14 +26,28 @@ class Navigation extends Component {
         </div>
         <h2 className="authors h3">Список авторов</h2>
         <div className="find">
-          <button name="registr" id="registr" onClick={this.showModal}>
-            Войти
-          </button>
+          <AuthContext.Consumer>
+            {({ user, logout }) =>
+              user !== null ? (
+                <button name="user" onClick={logout}>{`${user.name} ${
+                  user.lastname
+                }`}</button>
+              ) : (
+                <button name="registr" id="registr" onClick={this.showModal}>
+                  Войти
+                </button>
+              )
+            }
+          </AuthContext.Consumer>
           <form>
             <input type="text" name="search" placeholder="Поиск.." />
           </form>
         </div>
-        {this.state.isVisible ? <Signup hide={this.hideModal} /> : null}
+        {this.state.isVisible ? (
+          <AuthContext.Consumer>
+            {({ login }) => <Signup hide={this.hideModal} login={login} />}
+          </AuthContext.Consumer>
+        ) : null}
       </React.Fragment>
     );
   }
