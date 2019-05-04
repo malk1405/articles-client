@@ -30,7 +30,6 @@ class Form extends Component {
         { ...this.state.user },
         { cancelToken: this.signal.token }
       );
-      this.props.hide();
       this.props.login(user);
     } catch (err) {
       if (Axios.isCancel(err)) {

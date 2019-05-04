@@ -24,7 +24,6 @@ class Form extends Component {
         { cancelToken: this.signal.token }
       );
       if (user[0]) {
-        this.props.hide();
         this.props.login(user[0]);
       } else {
         this.setState({ errorText: "Пользователь не найден" });
