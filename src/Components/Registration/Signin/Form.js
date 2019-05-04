@@ -1,17 +1,26 @@
 import React, { Component } from "react";
 import "../Signup.css";
+import axios from "axios";
 
 class Form extends Component {
-  state = { name: "", lastname: "", email: "", password: "" };
+  state = { user: { email: "", password: "" }, errorText: "" };
   onEdit = event => {
     this.setState({ [event.target.id]: event.target.value });
   };
 
   onSubmit = event => {
     event.preventDefault();
-    console.log(this.state);
-    this.props.login(this.state);
-    this.props.hide();
+    const { email, password } = this.state;
+    axios
+      .get(`/api/authors/?email=${email}&password=${password}`)
+      .then(({ data }) => {
+        if (data[0]) {
+          this.props.login(data[0]);
+          this.props.hide();
+        } else {
+          this.setState({ errorText: "Пользователь не найден" });
+        }
+      });
   };
 
   render() {

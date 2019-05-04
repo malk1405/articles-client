@@ -64,7 +64,7 @@ body {
 .logo {
   grid-area: g-logo;
 }
-.main {
+main {
   grid-area: g-main;
 }
 .find {

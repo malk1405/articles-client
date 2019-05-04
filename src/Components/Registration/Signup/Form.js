@@ -3,18 +3,30 @@ import "../Signup.css";
 import axios from "axios";
 
 class Form extends Component {
-  state = { name: "", lastname: "", email: "", password: "" };
+  state = {
+    user: { name: "", lastname: "", email: "", password: "" },
+    errorText: ""
+  };
   onEdit = event => {
-    this.setState({ [event.target.id]: event.target.value });
+    const { id, value } = event.target;
+    this.setState(state => {
+      const user = { ...state.user };
+      user[id] = value;
+      return { user };
+    });
   };
 
   onSubmit = event => {
     event.preventDefault();
-    const { name, lastname } = this.state;
-    axios.post("/api/authors", { name, lastname }).then(({ data }) => {
-      this.props.login(data);
-    });
-    this.props.hide();
+    axios
+      .post("/api/authors", { ...this.state.user })
+      .then(({ data }) => {
+        this.props.login(data);
+        this.props.hide();
+      })
+      .catch(({ response }) => {
+        this.setState({ errorText: response.data.message });
+      });
   };
   render() {
     return (
@@ -58,6 +70,7 @@ class Form extends Component {
               Sign Up
             </button>
           </form>
+          {this.state.errorText !== "" ? <p>{this.state.errorText}</p> : null}
         </div>
         <div className="backdrop" onClick={this.props.hide} />
       </React.Fragment>

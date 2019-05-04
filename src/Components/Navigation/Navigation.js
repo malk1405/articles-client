@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { AuthContext } from "../../Context/auth";
 import Registration from "../Registration/Registration";
 import logo from "./logo.gif";
+import "./Navigation.css";
+import Menu from "./Menu/Menu";
 
 class Navigation extends Component {
   render() {
@@ -21,13 +23,7 @@ class Navigation extends Component {
         <div className="find">
           <AuthContext.Consumer>
             {({ user, logout }) =>
-              user !== null ? (
-                <button name="user" onClick={logout}>{`${user.name} ${
-                  user.lastname
-                }`}</button>
-              ) : (
-                <Registration />
-              )
+              user !== null ? <Menu /> : <Registration />
             }
           </AuthContext.Consumer>
           <form>
