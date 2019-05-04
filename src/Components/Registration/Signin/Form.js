@@ -5,12 +5,14 @@ import axios from "axios";
 class Form extends Component {
   state = { user: { email: "", password: "" }, errorText: "" };
   onEdit = event => {
-    this.setState({ [event.target.id]: event.target.value });
+    const user = { ...this.state.user };
+    user[event.target.id] = event.target.value;
+    this.setState({ user });
   };
 
   onSubmit = event => {
     event.preventDefault();
-    const { email, password } = this.state;
+    const { email, password } = this.state.user;
     axios
       .get(`/api/authors/?email=${email}&password=${password}`)
       .then(({ data }) => {
