@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 import "../Signup.css";
-import axios from "axios";
+import Axios from "axios";
 
 class Form extends Component {
+  signal = Axios.CancelToken.source();
+
   state = {
     user: { name: "", lastname: "", email: "", password: "" },
     errorText: ""
   };
+
+  componentWillUnmount() {
+    this.signal.cancel("Api is being cancelled");
+  }
+
   onEdit = event => {
     const { id, value } = event.target;
     this.setState(state => {
@@ -16,17 +23,26 @@ class Form extends Component {
     });
   };
 
+  onPostUser = async () => {
+    try {
+      const { data: user } = await Axios.post(
+        "/api/authors",
+        { ...this.state.user },
+        { cancelToken: this.signal.token }
+      );
+      this.props.hide();
+      this.props.login(user);
+    } catch (err) {
+      if (Axios.isCancel(err)) {
+      } else {
+        this.setState({ errorText: err.response.data.message });
+      }
+    }
+  };
+
   onSubmit = event => {
     event.preventDefault();
-    axios
-      .post("/api/authors", { ...this.state.user })
-      .then(({ data }) => {
-        this.props.login(data);
-        this.props.hide();
-      })
-      .catch(({ response }) => {
-        this.setState({ errorText: response.data.message });
-      });
+    this.onPostUser();
   };
   render() {
     return (

@@ -3,12 +3,32 @@ import { AuthContext } from "../../Context/auth";
 import Axios from "axios";
 
 export default class Author extends Component {
-  state = { user: null, newUser: {} };
+  signal = Axios.CancelToken.source();
+
+  state = { user: null, newUser: {}, isLoading: false };
+
   componentDidMount() {
-    Axios.get(`/api/${this.props.location.pathname}`).then(({ data }) => {
-      this.setState({ user: data, newUser: data });
-    });
+    this.onLoadUser();
   }
+
+  componentWillUnmount() {
+    this.signal.cancel("Api is being canceled");
+  }
+
+  onLoadUser = async () => {
+    try {
+      this.setState({ isLoading: true });
+      const response = await Axios.get(`/api/${this.props.location.pathname}`, {
+        cancelToken: this.signal.token
+      });
+      this.setState({ user: response.data, newUser: response.data });
+    } catch (err) {
+      if (Axios.isCancel(err)) {
+      } else {
+        this.setState({ isLoading: false });
+      }
+    }
+  };
 
   onEdit = event => {
     const { name, value } = event.target;

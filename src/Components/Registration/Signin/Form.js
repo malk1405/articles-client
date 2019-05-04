@@ -1,28 +1,40 @@
 import React, { Component } from "react";
 import "../Signup.css";
-import axios from "axios";
+import Axios from "axios";
 
 class Form extends Component {
+  signal = Axios.CancelToken.source();
+
   state = { user: { email: "", password: "" }, errorText: "" };
+
+  componentWillUnmount() {
+    this.signal.cancel("Api is being cancelled");
+  }
+
   onEdit = event => {
     const user = { ...this.state.user };
     user[event.target.id] = event.target.value;
     this.setState({ user });
   };
 
+  onGetUser = async ({ email, password }) => {
+    try {
+      const { data: user } = await Axios.get(
+        `/api/authors/?email=${email}&password=${password}`,
+        { cancelToken: this.signal.token }
+      );
+      if (user[0]) {
+        this.props.hide();
+        this.props.login(user[0]);
+      } else {
+        this.setState({ errorText: "Пользователь не найден" });
+      }
+    } catch (err) {}
+  };
+
   onSubmit = event => {
     event.preventDefault();
-    const { email, password } = this.state.user;
-    axios
-      .get(`/api/authors/?email=${email}&password=${password}`)
-      .then(({ data }) => {
-        if (data[0]) {
-          this.props.login(data[0]);
-          this.props.hide();
-        } else {
-          this.setState({ errorText: "Пользователь не найден" });
-        }
-      });
+    this.onGetUser(this.state.user);
   };
 
   render() {
