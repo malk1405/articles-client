@@ -11,6 +11,10 @@ export default class Author extends Component {
     this.onLoadUser();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) this.onLoadUser();
+  }
+
   componentWillUnmount() {
     this.signal.cancel("Api is being canceled");
   }
