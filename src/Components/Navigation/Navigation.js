@@ -13,7 +13,8 @@ class Navigation extends Component {
         <div className="banner">
           <h1 className="center">
             Московский авиацонный институт
-            <br /> (национальный иследовательский университет)
+            <br />
+            (национальный иcследовательский университет)
           </h1>
           <h2 className="center">
             Кафедра 304 "Вычислительные машины, системы и сети"
@@ -22,9 +23,7 @@ class Navigation extends Component {
         <h2 className="authors h3">Список авторов</h2>
         <div className="find">
           <AuthContext.Consumer>
-            {({ user, logout }) =>
-              user !== null ? <Menu /> : <Registration />
-            }
+            {({ user }) => (user !== null ? <Menu /> : <Registration />)}
           </AuthContext.Consumer>
           <form>
             <input type="text" name="search" placeholder="Поиск.." />
