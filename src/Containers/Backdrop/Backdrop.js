@@ -1,10 +1,15 @@
-import React, { Fragment } from "react";
+import React, { createRef } from "react";
 
 export default props => {
+  let backdrop = createRef();
+
+  const onClick = event => {
+    if (backdrop.current === event.target) props.hide();
+  };
+
   return (
-    <Fragment>
+    <div ref={backdrop} className="backdrop" onClick={onClick}>
       {props.children}
-      <div className="backdrop" onClick={props.hide} />
-    </Fragment>
+    </div>
   );
 };
