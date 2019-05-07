@@ -21,7 +21,7 @@ export default class Home extends Component {
 
   onSave = () => {
     Axios.put(`/api/authors/${this.state.user._id}`, {
-      ...this.state.newUser
+      ...this.state.user
     }).then(({ data }) => {
       this.props.login(this.state.user);
     });
