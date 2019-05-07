@@ -58,7 +58,7 @@ class Form extends Component {
           <button type="submit" className="button" onClick={this.onSubmit}>
             Войти
           </button>
-          <button name="signup" onClick={this.props.onSignup}>
+          <button name="signup" type="button" onClick={this.props.onSignup}>
             Создать учетную запись
           </button>
         </form>
