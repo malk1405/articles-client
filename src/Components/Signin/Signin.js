@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../Signup.css";
 import Axios from "axios";
 
 class Form extends Component {
@@ -38,34 +37,31 @@ class Form extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <div className="modal">
-          <form action="index.html" className="signup-form">
-            <label htmlFor="email">E-Mail</label>
-            <input
-              type="email"
-              id="email"
-              onChange={this.onEdit}
-              required
-              value={this.state.email}
-            />
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              onChange={this.onEdit}
-              required
-              value={this.state.password}
-            />
+      <div className="modal">
+        <form action="index.html" className="signup-form">
+          <label htmlFor="email">E-Mail</label>
+          <input
+            type="email"
+            id="email"
+            onChange={this.onEdit}
+            required
+            value={this.state.email}
+          />
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            onChange={this.onEdit}
+            required
+            value={this.state.password}
+          />
 
-            <button type="submit" className="button" onClick={this.onSubmit}>
-              Войти
-            </button>
-          </form>
-          <button onClick={this.props.onSignup}>Создать учетную запись</button>
-        </div>
-        <div className="backdrop" onClick={this.props.hide} />
-      </React.Fragment>
+          <button type="submit" className="button" onClick={this.onSubmit}>
+            Войти
+          </button>
+        </form>
+        <button onClick={this.props.onSignup}>Создать учетную запись</button>
+      </div>
     );
   }
 }

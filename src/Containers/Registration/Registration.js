@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { AuthContext } from "../../Context/auth";
-import Signin from "./Signin/Form";
-import Signup from "./Signup/Form";
+import Signin from "../../Components/Signin/Signin";
+import Signup from "../../Components/Signup/Signup";
+import "./Registration.css";
+import Backdrop from "../Backdrop/Backdrop";
 
 class Registration extends Component {
   state = {
@@ -34,14 +36,18 @@ class Registration extends Component {
             <button name="signup" id="signup" onClick={this.showSignup}>
               Регистрация
             </button>
-            {!this.state.isVisible ? null : this.state.signin ? (
-              <Signin
-                hide={this.hideModal}
-                login={login}
-                onSignup={this.showSignup}
-              />
-            ) : (
-              <Signup hide={this.hideModal} login={login} />
+            {!this.state.isVisible ? null : (
+              <Backdrop hide={this.hideModal}>
+                {this.state.signin ? (
+                  <Signin
+                    hide={this.hideModal}
+                    login={login}
+                    onSignup={this.showSignup}
+                  />
+                ) : (
+                  <Signup login={login} />
+                )}
+              </Backdrop>
             )}
           </React.Fragment>
         )}
