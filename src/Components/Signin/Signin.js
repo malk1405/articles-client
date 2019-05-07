@@ -38,7 +38,7 @@ class Form extends Component {
   render() {
     return (
       <div className="modal">
-        <form action="index.html" className="signup-form">
+        <form className="signup-form">
           <label htmlFor="email">E-Mail</label>
           <input
             type="email"
@@ -55,12 +55,13 @@ class Form extends Component {
             required
             value={this.state.password}
           />
-
           <button type="submit" className="button" onClick={this.onSubmit}>
             Войти
           </button>
+          <button name="signup" onClick={this.props.onSignup}>
+            Создать учетную запись
+          </button>
         </form>
-        <button onClick={this.props.onSignup}>Создать учетную запись</button>
       </div>
     );
   }

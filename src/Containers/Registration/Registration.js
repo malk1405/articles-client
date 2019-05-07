@@ -8,15 +8,11 @@ import Backdrop from "../Backdrop/Backdrop";
 class Registration extends Component {
   state = {
     isVisible: false,
-    signin: false
+    form: "signin"
   };
 
-  showSignin = () => {
-    this.setState({ isVisible: true, signin: true });
-  };
-
-  showSignup = () => {
-    this.setState({ isVisible: true, signin: false });
+  showForm = event => {
+    this.setState({ isVisible: true, form: event.target.name });
   };
 
   hideModal = () => {
@@ -27,31 +23,27 @@ class Registration extends Component {
 
   render() {
     return (
-      <AuthContext.Consumer>
-        {({ login }) => (
-          <React.Fragment>
-            <button name="signin" id="signin" onClick={this.showSignin}>
-              Войти
-            </button>
-            <button name="signup" id="signup" onClick={this.showSignup}>
-              Регистрация
-            </button>
-            {!this.state.isVisible ? null : (
-              <Backdrop hide={this.hideModal}>
-                {this.state.signin ? (
-                  <Signin
-                    hide={this.hideModal}
-                    login={login}
-                    onSignup={this.showSignup}
-                  />
+      <React.Fragment>
+        <button name="signin" onClick={this.showForm}>
+          Войти
+        </button>
+        <button name="signup" onClick={this.showForm}>
+          Регистрация
+        </button>
+        {!this.state.isVisible ? null : (
+          <Backdrop hide={this.hideModal}>
+            <AuthContext.Consumer>
+              {({ login }) =>
+                this.state.form === "signin" ? (
+                  <Signin login={login} onSignup={this.showForm} />
                 ) : (
                   <Signup login={login} />
-                )}
-              </Backdrop>
-            )}
-          </React.Fragment>
+                )
+              }
+            </AuthContext.Consumer>
+          </Backdrop>
         )}
-      </AuthContext.Consumer>
+      </React.Fragment>
     );
   }
 }

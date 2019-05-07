@@ -42,10 +42,11 @@ class Form extends Component {
     event.preventDefault();
     this.onPostUser();
   };
+
   render() {
     return (
       <div className="modal">
-        <form action="index.html" className="signup-form">
+        <form className="signup-form">
           <label htmlFor="name">First name</label>
           <input
             type="text"
@@ -78,7 +79,6 @@ class Form extends Component {
             required
             value={this.state.password}
           />
-
           <button type="submit" className="button" onClick={this.onSubmit}>
             Sign Up
           </button>
