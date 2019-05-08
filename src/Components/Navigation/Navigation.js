@@ -8,7 +8,7 @@ import Menu from "./Menu/Menu";
 class Navigation extends Component {
   render() {
     return (
-      <React.Fragment>
+      <>
         <img className="logo" src={logo} alt={"logo"} />
         <div className="banner">
           <h1 className="center">
@@ -29,7 +29,7 @@ class Navigation extends Component {
             <input type="text" name="search" placeholder="Поиск.." />
           </form>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

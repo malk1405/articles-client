@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import Axios from "axios";
 
 export default class Home extends Component {
@@ -36,7 +36,7 @@ export default class Home extends Component {
   render() {
     const { name, lastname, email, birthDate } = this.state.user;
     return (
-      <Fragment>
+      <>
         <ul>
           <li>
             Имя: <input name="name" value={name} onChange={this.onEdit} />
@@ -55,7 +55,7 @@ export default class Home extends Component {
         </ul>
         <button onClick={this.onSave}>Сохранить</button>
         <button onClick={this.onSetDefault}>Отменить</button>
-      </Fragment>
+      </>
     );
   }
 }

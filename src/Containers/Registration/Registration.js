@@ -23,7 +23,7 @@ class Registration extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <button name="signin" onClick={this.showForm}>
           Войти
         </button>
@@ -43,7 +43,7 @@ class Registration extends Component {
             </AuthContext.Consumer>
           </Backdrop>
         )}
-      </React.Fragment>
+      </>
     );
   }
 }
