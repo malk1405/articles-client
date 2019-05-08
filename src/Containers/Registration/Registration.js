@@ -1,50 +1,43 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { AuthContext } from "../../Context/auth";
 import Signin from "../../Components/Signin/Signin";
 import Signup from "../../Components/Signup/Signup";
 import "./Registration.css";
 import Backdrop from "../Backdrop/Backdrop";
+import useVisibility from "../../hooks/visibility";
 
-class Registration extends Component {
-  state = {
-    isVisible: false,
-    form: "signin"
+const Registration = () => {
+  const [isVisible, show, hide] = useVisibility(false);
+  const [form, setForm] = useState("signin");
+
+  const showForm = event => {
+    show();
+    setForm(event.target.name);
   };
 
-  showForm = event => {
-    this.setState({ isVisible: true, form: event.target.name });
-  };
+  return (
+    <>
+      <button name="signin" onClick={showForm}>
+        Войти
+      </button>
+      <button name="signup" onClick={showForm}>
+        Регистрация
+      </button>
+      {!isVisible ? null : (
+        <Backdrop hide={hide}>
+          <AuthContext.Consumer>
+            {({ login }) =>
+              form === "signin" ? (
+                <Signin login={login} onSignup={showForm} />
+              ) : (
+                <Signup login={login} />
+              )
+            }
+          </AuthContext.Consumer>
+        </Backdrop>
+      )}
+    </>
+  );
+};
 
-  hideModal = () => {
-    this.setState({
-      isVisible: false
-    });
-  };
-
-  render() {
-    return (
-      <>
-        <button name="signin" onClick={this.showForm}>
-          Войти
-        </button>
-        <button name="signup" onClick={this.showForm}>
-          Регистрация
-        </button>
-        {!this.state.isVisible ? null : (
-          <Backdrop hide={this.hideModal}>
-            <AuthContext.Consumer>
-              {({ login }) =>
-                this.state.form === "signin" ? (
-                  <Signin login={login} onSignup={this.showForm} />
-                ) : (
-                  <Signup login={login} />
-                )
-              }
-            </AuthContext.Consumer>
-          </Backdrop>
-        )}
-      </>
-    );
-  }
-}
 export default Registration;

@@ -1,59 +1,41 @@
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../../../Context/auth";
 import { Link } from "react-router-dom";
+import useVisibility from "../../../hooks/visibility";
 
-class Menu extends Component {
-  state = { isVisible: false };
+const Menu = () => {
+  const [isVisible, showMenu, hideMenu, toggle] = useVisibility(false);
+  const { user, logout } = useContext(AuthContext);
 
-  showMenu = () => {
-    this.setState({ isVisible: true });
-  };
-
-  hideMenu = () => {
-    this.setState({ isVisible: false });
-  };
-
-  toggleMenu = e => {
+  const toggleMenu = e => {
     e.stopPropagation();
-    this.setState(state => {
-      return { isVisible: !state.isVisible };
-    });
+    toggle();
   };
 
-  render() {
-    return (
-      <AuthContext.Consumer>
-        {({ user, logout }) => (
-          <div
-            onMouseEnter={this.showMenu}
-            onMouseLeave={this.hideMenu}
-            onClick={this.hideMenu}
-          >
-            <button name="user" onClick={this.toggleMenu}>{`${user.name} ${
-              user.lastname
-            }`}</button>
-            {this.state.isVisible ? (
-              <div
-                style={{
-                  position: "absolute",
-                  display: "flex",
-                  flexDirection: "column"
-                }}
-              >
-                <Link to={`/authors/${user._id}`}>Личный кабинет</Link>
-                <button name="user">Добавить статью</button>
-                <button name="user">Мои статьи</button>
-                <Link to="/articles">На главную</Link>
-                <button name="user" onClick={logout}>
-                  Выйти
-                </button>
-              </div>
-            ) : null}
-          </div>
-        )}
-      </AuthContext.Consumer>
-    );
-  }
-}
+  return (
+    <div onMouseEnter={showMenu} onMouseLeave={hideMenu} onClick={hideMenu}>
+      <button name="user" onClick={toggleMenu}>{`${user.name} ${
+        user.lastname
+      }`}</button>
+      {isVisible ? (
+        <div
+          style={{
+            position: "absolute",
+            display: "flex",
+            flexDirection: "column"
+          }}
+        >
+          <Link to={`/authors/${user._id}`}>Личный кабинет</Link>
+          <button name="user">Добавить статью</button>
+          <button name="user">Мои статьи</button>
+          <Link to="/articles">На главную</Link>
+          <button name="user" onClick={logout}>
+            Выйти
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+};
 
 export default Menu;
