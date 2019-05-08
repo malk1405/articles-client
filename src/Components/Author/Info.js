@@ -15,7 +15,10 @@ export default class Info extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.pathname !== prevProps.pathname) this.onLoadUser();
+    if (this.props.pathname !== prevProps.pathname) {
+      this.signal.cancel("Api is being canceled");
+      this.onLoadUser();
+    }
   }
 
   componentWillUnmount() {
