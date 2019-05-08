@@ -9,21 +9,18 @@ import Navigation from "./Components/Navigation/Navigation";
 const RedirectFromHome = () => <Redirect to="/articles" />;
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+  login = user => {
+    this.setState({
+      user: { ...user }
+    });
+  };
 
-    this.login = user => {
-      this.setState({
-        user: { ...user }
-      });
-    };
+  logout = () => {
+    this.setState({ user: null });
+  };
 
-    this.logout = () => {
-      this.setState({ user: null });
-    };
+  state = { user: null, login: this.login, logout: this.logout };
 
-    this.state = { user: null, login: this.login, logout: this.logout };
-  }
   render() {
     return (
       <AuthContext.Provider value={this.state}>
