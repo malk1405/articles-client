@@ -1,92 +1,92 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
-class Form extends Component {
-  signal = Axios.CancelToken.source();
+const Signup = props => {
+  const [user, setUser] = useState({});
+  const [errorText, setErrorText] = useState("");
+  const [isSending, setIsSending] = useState(false);
 
-  state = {
-    user: { name: "", lastname: "", email: "", password: "" },
-    errorText: ""
+  useEffect(
+    () => {
+      if (!isSending) return () => {};
+      const signal = Axios.CancelToken.source();
+      const postUser = async () => {
+        try {
+          const { data: newUser } = await Axios.post(
+            "/api/authors",
+            { ...user },
+            { cancelToken: signal.token }
+          );
+          setIsSending(false);
+          props.login(newUser);
+        } catch (err) {
+          if (Axios.isCancel(err)) {
+          } else {
+            setErrorText(err.response.data.message);
+            setIsSending(false);
+          }
+        }
+      };
+      postUser();
+      return () => {
+        signal.cancel("Api is being cancelled");
+      };
+    },
+    // eslint-disable-next-line
+    [isSending]
+  );
+
+  const onChange = event => {
+    setUser({ ...user, [event.target.name]: event.target.value });
   };
 
-  componentWillUnmount() {
-    this.signal.cancel("Api is being cancelled");
-  }
-
-  onEdit = event => {
-    const { id, value } = event.target;
-    this.setState(state => {
-      const user = { ...state.user };
-      user[id] = value;
-      return { user };
-    });
-  };
-
-  onPostUser = async () => {
-    try {
-      const { data: user } = await Axios.post(
-        "/api/authors",
-        { ...this.state.user },
-        { cancelToken: this.signal.token }
-      );
-      this.props.login(user);
-    } catch (err) {
-      if (Axios.isCancel(err)) {
-      } else {
-        this.setState({ errorText: err.response.data.message });
-      }
-    }
-  };
-
-  onSubmit = event => {
+  const onSubmit = event => {
     event.preventDefault();
-    this.onPostUser();
+    setIsSending(true);
   };
 
-  render() {
-    return (
-      <div className="modal">
-        <form className="signup-form">
-          <label htmlFor="name">First name</label>
-          <input
-            type="text"
-            id="name"
-            onChange={this.onEdit}
-            required
-            value={this.state.name}
-          />
-          <label htmlFor="lastname">Last name</label>
-          <input
-            type="text"
-            id="lastname"
-            onChange={this.onEdit}
-            required
-            value={this.state.lastname}
-          />
-          <label htmlFor="email">E-Mail</label>
-          <input
-            type="email"
-            id="email"
-            onChange={this.onEdit}
-            required
-            value={this.state.email}
-          />
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            onChange={this.onEdit}
-            required
-            value={this.state.password}
-          />
-          <button type="submit" className="button" onClick={this.onSubmit}>
-            Sign Up
-          </button>
-        </form>
-        {this.state.errorText !== "" ? <p>{this.state.errorText}</p> : null}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="modal">
+      <form className="signup-form">
+        <label htmlFor="name">First name</label>
+        <input
+          type="text"
+          name="name"
+          onChange={onChange}
+          required
+          value={user.name || ""}
+        />
+        <label htmlFor="lastname">Last name</label>
+        <input
+          type="text"
+          name="lastname"
+          onChange={onChange}
+          required
+          value={user.lastname || ""}
+        />
+        <label htmlFor="email">E-Mail</label>
+        <input
+          type="email"
+          name="email"
+          onChange={onChange}
+          required
+          value={user.email || ""}
+        />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          onChange={onChange}
+          required
+          value={user.password || ""}
+        />
+        <button type="submit" className="button" onClick={onSubmit}>
+          Sign Up
+        </button>
+      </form>
+      {errorText !== "" ? <p>{errorText}</p> : null}
+    </div>
+  );
+};
 
-export default Form;
+export default Signup;

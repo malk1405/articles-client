@@ -1,61 +1,73 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
-export default class Home extends Component {
-  signal = Axios.CancelToken.source();
+const Home = props => {
+  const [user, setUser] = useState({ ...props.user });
+  const [errorText, setErrorText] = useState("");
+  const [isSending, setIsSending] = useState(false);
 
-  state = { user: { ...this.props.user } };
+  useEffect(
+    () => {
+      if (!isSending) return () => {};
+      const signal = Axios.CancelToken.source();
+      const postUser = async () => {
+        try {
+          await Axios.put(`/api/authors/${user._id}`, {
+            ...user
+          });
+          setIsSending(false);
+          props.login(user);
+        } catch (err) {
+          if (Axios.isCancel(err)) {
+          } else {
+            setErrorText(err.response.data.message);
+            setIsSending(false);
+          }
+        }
+      };
+      postUser();
+      return () => {
+        signal.cancel("Api is being cancelled");
+      };
+    },
+    // eslint-disable-next-line
+    [isSending]
+  );
 
-  componentWillUnmount() {
-    this.signal.cancel("Api is being canceled");
-  }
-
-  onEdit = event => {
-    const { name, value } = event.target;
-    this.setState(state => {
-      const user = { ...state.user };
-      user[name] = value;
-      return { user };
-    });
+  const onChange = event => {
+    setUser({ ...user, [event.target.name]: event.target.value });
   };
 
-  onSave = () => {
-    Axios.put(`/api/authors/${this.state.user._id}`, {
-      ...this.state.user
-    }).then(({ data }) => {
-      this.props.login(this.state.user);
-    });
+  const onSave = () => {
+    setIsSending(true);
   };
 
-  onSetDefault = () => {
-    this.setState((state, props) => {
-      return { user: { ...props.user } };
-    });
+  const onSetDefault = () => {
+    setUser({ ...props.user });
   };
 
-  render() {
-    const { name, lastname, email, birthDate } = this.state.user;
-    return (
-      <>
-        <ul>
-          <li>
-            Имя: <input name="name" value={name} onChange={this.onEdit} />
-          </li>
-          <li>
-            Фамилия:{" "}
-            <input name="lastname" value={lastname} onChange={this.onEdit} />
-          </li>
-          <li>
-            Дата рождения:{" "}
-            <input name="birthDate" value={birthDate} onChange={this.onEdit} />
-          </li>
-          <li>
-            Email: <input name="email" value={email} onChange={this.onEdit} />
-          </li>
-        </ul>
-        <button onClick={this.onSave}>Сохранить</button>
-        <button onClick={this.onSetDefault}>Отменить</button>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <ul>
+        <li>
+          Имя: <input name="name" value={user.name} onChange={onChange} />
+        </li>
+        <li>
+          Фамилия:{" "}
+          <input name="lastname" value={user.lastname} onChange={onChange} />
+        </li>
+        <li>
+          Дата рождения:{" "}
+          <input name="birthDate" value={user.birthDate} onChange={onChange} />
+        </li>
+        <li>
+          Email: <input name="email" value={user.email} onChange={onChange} />
+        </li>
+      </ul>
+      <button onClick={onSave}>Сохранить</button>
+      <button onClick={onSetDefault}>Отменить</button>
+      {errorText !== "" ? <p>{errorText}</p> : null}
+    </>
+  );
+};
+export default Home;

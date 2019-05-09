@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class Main extends Component {
-  render() {
-    return <div>VITALINAAAAA</div>;
-  }
-}
+const Main = () => {
+  return <div>VITALINAAAAA</div>;
+};
+
+export default Main;
