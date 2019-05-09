@@ -14,8 +14,10 @@ import Navigation from "./Components/Navigation/Navigation";
 
 const RedirectFromHome = () => <Redirect to="/articles" />;
 
+const getInitialUser = () => JSON.parse(window.localStorage.getItem("user"));
+
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(getInitialUser);
 
   const login = useCallback(user => {
     setUser({ ...user });
@@ -28,11 +30,9 @@ const App = () => {
   const justMounted = useRef(true);
 
   useEffect(() => {
-    if (justMounted.current) {
-      setUser(JSON.parse(window.localStorage.getItem("user")));
-    } else {
+    if (!justMounted.current)
       window.localStorage.setItem("user", JSON.stringify(user));
-    }
+
     justMounted.current = false;
   }, [user]);
 
