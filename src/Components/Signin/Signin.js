@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
+import useForm from "../../hooks/useForm";
 
 const Signin = props => {
-  const [user, setUser] = useState({});
   const [errorText, setErrorText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    setIsSubmitting
+  } = useForm();
 
   useEffect(
     () => {
-      if (!isLoading) return () => {};
+      if (!isSubmitting) return () => {};
       const signal = Axios.CancelToken.source();
       const getUser = async ({ email, password }) => {
         try {
@@ -16,7 +22,7 @@ const Signin = props => {
             `/api/authors/?email=${email}&password=${password}`,
             { cancelToken: signal.token }
           );
-          setIsLoading(false);
+          setIsSubmitting(false);
           if (fetchedUser[0]) {
             props.login(fetchedUser[0]);
           } else {
@@ -26,47 +32,39 @@ const Signin = props => {
           if (Axios.isCancel(err)) {
           } else {
             setErrorText(err);
-            setIsLoading(false);
+            setIsSubmitting(false);
           }
         }
       };
-      getUser(user);
+      getUser(values);
       return () => {
         signal.cancel("Api is being cancelled");
       };
     },
     // eslint-disable-next-line
-    [isLoading]
+    [isSubmitting]
   );
 
-  const onChange = event => {
-    setUser({ ...user, [event.target.name]: event.target.value });
-  };
-
-  const onSubmit = event => {
-    event.preventDefault();
-    setIsLoading(true);
-  };
   return (
     <div className="modal">
-      <form className="signup-form">
+      <form className="signup-form" onSubmit={handleSubmit}>
         <label htmlFor="email">E-Mail</label>
         <input
           type="email"
           name="email"
-          onChange={onChange}
+          onChange={handleChange}
           required
-          value={user.email || ""}
+          value={values.email || ""}
         />
         <label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"
-          onChange={onChange}
+          onChange={handleChange}
           required
-          value={user.password || ""}
+          value={values.password || ""}
         />
-        <button type="submit" className="button" onClick={onSubmit}>
+        <button type="submit" className="button">
           Войти
         </button>
         <button name="signup" type="button" onClick={props.onSignup}>

@@ -1,29 +1,35 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
+import useForm from "../../hooks/useForm";
 
 const Signup = props => {
-  const [user, setUser] = useState({});
   const [errorText, setErrorText] = useState("");
-  const [isSending, setIsSending] = useState(false);
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    setIsSubmitting
+  } = useForm();
 
   useEffect(
     () => {
-      if (!isSending) return () => {};
+      if (!isSubmitting) return () => {};
       const signal = Axios.CancelToken.source();
       const postUser = async () => {
         try {
           const { data: newUser } = await Axios.post(
             "/api/authors",
-            { ...user },
+            { ...values },
             { cancelToken: signal.token }
           );
-          setIsSending(false);
+          setIsSubmitting(false);
           props.login(newUser);
         } catch (err) {
           if (Axios.isCancel(err)) {
           } else {
             setErrorText(err.response.data.message);
-            setIsSending(false);
+            setIsSubmitting(false);
           }
         }
       };
@@ -33,54 +39,45 @@ const Signup = props => {
       };
     },
     // eslint-disable-next-line
-    [isSending]
+    [isSubmitting]
   );
-
-  const onChange = event => {
-    setUser({ ...user, [event.target.name]: event.target.value });
-  };
-
-  const onSubmit = event => {
-    event.preventDefault();
-    setIsSending(true);
-  };
 
   return (
     <div className="modal">
-      <form className="signup-form">
+      <form className="signup-form" onSubmit={handleSubmit}>
         <label htmlFor="name">First name</label>
         <input
           type="text"
           name="name"
-          onChange={onChange}
+          onChange={handleChange}
           required
-          value={user.name || ""}
+          value={values.name || ""}
         />
         <label htmlFor="lastname">Last name</label>
         <input
           type="text"
           name="lastname"
-          onChange={onChange}
+          onChange={handleChange}
           required
-          value={user.lastname || ""}
+          value={values.lastname || ""}
         />
         <label htmlFor="email">E-Mail</label>
         <input
           type="email"
           name="email"
-          onChange={onChange}
+          onChange={handleChange}
           required
-          value={user.email || ""}
+          value={values.email || ""}
         />
         <label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"
-          onChange={onChange}
+          onChange={handleChange}
           required
-          value={user.password || ""}
+          value={values.password || ""}
         />
-        <button type="submit" className="button" onClick={onSubmit}>
+        <button type="submit" className="button">
           Sign Up
         </button>
       </form>
