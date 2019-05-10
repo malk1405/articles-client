@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../../Context/auth";
 import { Link } from "react-router-dom";
-import useVisibility from "../../../hooks/visibility";
+import useVisibility from "../../../hooks/useVisibility";
 
 const Menu = () => {
-  const [isVisible, showMenu, hideMenu, toggle] = useVisibility(false);
+  const { isVisible, show: showMenu, hide: hideMenu, toggle } = useVisibility(
+    false
+  );
   const { user, logout } = useContext(AuthContext);
 
   const toggleMenu = e => {

@@ -15,7 +15,7 @@ const useVisibilty = (initialVisibity = false) => {
     setIsVisible(!isVisible);
   };
 
-  return [isVisible, show, hide, toggle];
+  return { isVisible, show, hide, toggle };
 };
 
 export default useVisibilty;

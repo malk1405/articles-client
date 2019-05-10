@@ -4,10 +4,10 @@ import Signin from "../../Components/Signin/Signin";
 import Signup from "../../Components/Signup/Signup";
 import "./Registration.css";
 import Backdrop from "../Backdrop/Backdrop";
-import useVisibility from "../../hooks/visibility";
+import useVisibility from "../../hooks/useVisibility";
 
 const Registration = () => {
-  const [isVisible, show, hide] = useVisibility(false);
+  const { isVisible, show, hide } = useVisibility(false);
   const [form, setForm] = useState("signin");
 
   const showForm = event => {
