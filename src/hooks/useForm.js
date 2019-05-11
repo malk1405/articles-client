@@ -1,13 +1,12 @@
 import { useState } from "react";
 
-const useForm = ({ initialValue = {}, submit = () => {} } = {}) => {
+const useForm = ({ initialValue = {} } = {}) => {
   const [values, setValues] = useState(initialValue);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = event => {
     if (event) event.preventDefault();
     setIsSubmitting(true);
-    submit();
   };
 
   const handleChange = event => {
