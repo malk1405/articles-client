@@ -1,47 +1,26 @@
-import React, { useState, useEffect } from "react";
-import Axios from "axios";
+import React, { useState } from "react";
 import useForm from "../../hooks/useForm";
+import useAxios from "../../hooks/useAxios";
 
-const Home = props => {
+const Home = ({ user, login }) => {
   const [errorText, setErrorText] = useState("");
-  const {
-    values,
-    handleChange,
-    handleSubmit,
-    handleReset,
-    isSubmitting,
-    setIsSubmitting
-  } = useForm({
-    initialValue: { ...props.user }
+
+  const { setData, setIsFetching } = useAxios({
+    url: `/api/authors/${user._id}`,
+    method: "put",
+    onSuccess: ({ data: fetchedUser }) => {
+      login(fetchedUser);
+    },
+    onFailure: setErrorText
   });
 
-  useEffect(
-    () => {
-      if (!isSubmitting) return () => {};
-      const signal = Axios.CancelToken.source();
-      const postUser = async () => {
-        try {
-          await Axios.put(`/api/authors/${values._id}`, {
-            ...values
-          });
-          setIsSubmitting(false);
-          props.login(values);
-        } catch (err) {
-          if (Axios.isCancel(err)) {
-          } else {
-            setErrorText(err.response.data.message);
-            setIsSubmitting(false);
-          }
-        }
-      };
-      postUser();
-      return () => {
-        signal.cancel("Api is being cancelled");
-      };
-    },
-    // eslint-disable-next-line
-    [isSubmitting]
-  );
+  const { values, handleChange, handleSubmit, handleReset } = useForm({
+    initialValue: { ...user },
+    submit: () => {
+      setData({ ...values });
+      setIsFetching(true);
+    }
+  });
 
   return (
     <>

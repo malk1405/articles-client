@@ -1,38 +1,28 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
+import useAxios from "../../hooks/useAxios";
 
 const Info = ({ pathname }) => {
   const [user, setUser] = useState({});
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [errorText, setErrorText] = useState("");
 
-  useEffect(() => {
-    const signal = Axios.CancelToken.source();
-    const onLoadUser = async () => {
-      try {
-        setIsLoading(true);
-        setError(false);
-        const response = await Axios.get(`/api/${pathname}`, {
-          cancelToken: signal.token
-        });
-        setIsLoading(false);
-        setUser(response.data);
-      } catch (err) {
-        if (Axios.isCancel(err)) {
-        } else {
-          setIsLoading(false);
-          setError(true);
-        }
-      }
-    };
-    onLoadUser();
-    return () => {
-      signal.cancel("Api is being canceled");
-    };
-  }, [pathname]);
+  const { isFetching, setUrl, setIsFetching } = useAxios({
+    onSuccess: ({ data: user }) => {
+      setUser(user);
+    },
+    onFailure: setErrorText
+  });
 
-  if (isLoading) return <p>Загрузка...</p>;
-  if (error) return <p>Ошибка</p>;
+  useEffect(
+    () => {
+      setUrl(`/api/${pathname}`);
+      setIsFetching(true);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [pathname]
+  );
+
+  if (isFetching) return <p>Загрузка...</p>;
+  if (errorText) return <p>{errorText}</p>;
   return (
     <ul>
       <li>Имя: {user.name}</li>
