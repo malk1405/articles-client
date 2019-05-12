@@ -28,42 +28,44 @@ const Menu = ({ history }) => {
   };
 
   return (
-    <div onMouseEnter={showMenu} onMouseLeave={hideMenu} onClick={hideMenu}>
-      <button name="user" onClick={toggleMenu}>{`${user.name} ${
-        user.lastname
-      }`}</button>
-      {isVisibleMenu ? (
-        <div
-          style={{
-            position: "absolute",
-            display: "flex",
-            flexDirection: "column"
-          }}
-        >
-          <Link to={`/authors/${user._id}`}>Личный кабинет</Link>
-          <button name="user" onClick={showNewArticle}>
-            Добавить статью
-          </button>
-          <button
-            name="user"
-            onClick={() => {
-              history.push(`/articles/${user._id}`);
+    <>
+      <div onMouseEnter={showMenu} onMouseLeave={hideMenu} onClick={hideMenu}>
+        <button name="user" onClick={toggleMenu}>{`${user.name} ${
+          user.lastname
+        }`}</button>
+        {isVisibleMenu ? (
+          <div
+            style={{
+              position: "absolute",
+              display: "flex",
+              flexDirection: "column"
             }}
           >
-            Мои статьи
-          </button>
-          <Link to="/articles">На главную</Link>
-          <button name="user" onClick={logout}>
-            Выйти
-          </button>
-        </div>
-      ) : null}
+            <Link to={`/authors/${user._id}`}>Личный кабинет</Link>
+            <button name="user" onClick={showNewArticle}>
+              Добавить статью
+            </button>
+            <button
+              name="user"
+              onClick={() => {
+                history.push(`/articles/${user._id}`);
+              }}
+            >
+              Мои статьи
+            </button>
+            <Link to="/articles">На главную</Link>
+            <button name="user" onClick={logout}>
+              Выйти
+            </button>
+          </div>
+        ) : null}
+      </div>
       {isVisibleNewArticle ? (
         <Backdrop hide={hideNewArticle}>
           <NewArticles hide={hideNewArticle} />
         </Backdrop>
       ) : null}
-    </div>
+    </>
   );
 };
 
