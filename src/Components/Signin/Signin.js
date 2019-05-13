@@ -5,10 +5,12 @@ import useAxios from "../../hooks/useAxios";
 const Signin = props => {
   const [errorText, setErrorText] = useState("");
 
-  const { setUrl, setIsFetching } = useAxios({
+  const { setData, setIsFetching } = useAxios({
+    url: "/api/auth",
+    method: "post",
     onSuccess: ({ data: fetchedUser }) => {
-      if (fetchedUser[0]) {
-        props.login(fetchedUser[0]);
+      if (fetchedUser) {
+        props.login(fetchedUser);
       } else {
         setErrorText("Пользователь не найден");
       }
@@ -19,7 +21,7 @@ const Signin = props => {
   const { values, handleChange, handleSubmit } = useForm({
     submit: () => {
       const { email, password } = values;
-      setUrl(`/api/authors/?email=${email}&password=${password}`);
+      setData({ email, password });
       setIsFetching(true);
     }
   });
