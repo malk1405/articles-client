@@ -4,9 +4,19 @@ import Registration from "../../Containers/Registration/Registration";
 import logo from "./logo.gif";
 import "./Navigation.css";
 import Menu from "./Menu/Menu";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import useForm from "../../hooks/useForm";
 
-const Navigation = () => {
+const Navigation = ({ history }) => {
+  const { values, handleChange, handleSubmit, handleReset } = useForm({
+    initialValue: {},
+    submit: () => {
+      const url = `/authors/?search=${values.search}`;
+
+      history.push(url);
+    }
+  });
+
   return (
     <>
       <img className="logo" src={logo} alt={"logo"} />
@@ -28,12 +38,18 @@ const Navigation = () => {
         <AuthContext.Consumer>
           {({ user }) => (user !== null ? <Menu /> : <Registration />)}
         </AuthContext.Consumer>
-        <form>
-          <input type="text" name="search" placeholder="Поиск.." />
+        <form onSubmit={handleSubmit}>
+          <input
+            value={values.search || ""}
+            onChange={handleChange}
+            type="text"
+            name="search"
+            placeholder="Поиск.."
+          />
         </form>
       </div>
     </>
   );
 };
 
-export default Navigation;
+export default withRouter(Navigation);

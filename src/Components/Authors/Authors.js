@@ -1,26 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useAxios from "../../hooks/useAxios";
 import { Link } from "react-router-dom";
 
-const Authors = () => {
+const Authors = ({ location: { pathname, search } }) => {
   const [authors, setAuthors] = useState([]);
-  const [errorText, setErrorText] = useState("");
-  const { isFetching, setIsFetching } = useAxios({
+  const [setErrorText] = useState("");
+
+  const { isFetching, setIsFetching, setUrl } = useAxios({
     isFetching: true,
-    url: `/api/authors/`,
+    url: `/api/authors/${search}`,
     onSuccess: responce => {
       if (responce) setAuthors(responce.data);
     },
     onFailure: setErrorText
   });
+
+  useEffect(
+    () => {
+      let url = `/api/authors/${search}`;
+      console.log(url);
+      setUrl(url);
+      setIsFetching(true);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [pathname, search]
+  );
+
   if (isFetching) return <div>Загрузка</div>;
-  if (authors.length == 0) return <div> Авторов нет</div>;
-  return authors.map(el => {
-    return (
-      <ul>
-        <Link to={`/authors/${el._id}`}> {`${el.name} ${el.lastname}`}</Link>
-      </ul>
-    );
-  });
+  if (authors.length === 0) return <div> Авторов нет</div>;
+  return (
+    <ol>
+      {authors.map(el => {
+        return (
+          <li>
+            <Link to={`/authors/${el._id}`}>
+              {" "}
+              {`${el.name} ${el.lastname}`}
+            </Link>
+          </li>
+        );
+      })}
+    </ol>
+  );
 };
 export default Authors;
