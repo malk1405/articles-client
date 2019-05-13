@@ -17,9 +17,7 @@ const Authors = ({ location: { pathname, search } }) => {
 
   useEffect(
     () => {
-      let url = `/api/authors/${search}`;
-      console.log(url);
-      setUrl(url);
+      setUrl(`/api/authors/${search}`);
       setIsFetching(true);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -32,7 +30,7 @@ const Authors = ({ location: { pathname, search } }) => {
     <ol>
       {authors.map(el => {
         return (
-          <li>
+          <li key={el._id}>
             <Link to={`/authors/${el._id}`}>
               {" "}
               {`${el.name} ${el.lastname}`}

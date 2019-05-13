@@ -8,7 +8,7 @@ import { Link, withRouter } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 
 const Navigation = ({ history }) => {
-  const { values, handleChange, handleSubmit, handleReset } = useForm({
+  const { values, handleChange, handleSubmit } = useForm({
     initialValue: {},
     submit: () => {
       const url = `/authors/?search=${values.search}`;
