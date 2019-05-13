@@ -4,6 +4,7 @@ import Registration from "../../Containers/Registration/Registration";
 import logo from "./logo.gif";
 import "./Navigation.css";
 import Menu from "./Menu/Menu";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   return (
@@ -19,7 +20,10 @@ const Navigation = () => {
           Кафедра 304 "Вычислительные машины, системы и сети"
         </h2>
       </div>
-      <h2 className="authors h3">Список авторов</h2>
+
+      <Link to={"/authors"} className="authors h3">
+        Список авторов
+      </Link>
       <div className="find">
         <AuthContext.Consumer>
           {({ user }) => (user !== null ? <Menu /> : <Registration />)}
