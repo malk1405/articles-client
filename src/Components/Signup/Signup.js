@@ -8,8 +8,8 @@ const Signup = props => {
   const { setData, setIsFetching } = useAxios({
     url: "/api/authors",
     method: "post",
-    onSuccess: ({ data: fetchedUser }) => {
-      props.login(fetchedUser);
+    onSuccess: ({ data: { user } }) => {
+      props.login(user);
     },
     onFailure: setErrorText
   });

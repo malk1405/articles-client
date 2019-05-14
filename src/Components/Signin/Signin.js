@@ -8,9 +8,9 @@ const Signin = props => {
   const { setData, setIsFetching } = useAxios({
     url: "/api/auth",
     method: "post",
-    onSuccess: ({ data: fetchedUser }) => {
-      if (fetchedUser) {
-        props.login(fetchedUser);
+    onSuccess: ({ data: { user } }) => {
+      if (user) {
+        props.login(user);
       } else {
         setErrorText("Пользователь не найден");
       }
