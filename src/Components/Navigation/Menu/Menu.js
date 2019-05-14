@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../../Context/auth";
-import { Link } from "react-router-dom";
 import useVisibility from "../../../hooks/useVisibility";
 import Backdrop from "../../../Containers/Backdrop/Backdrop";
 import NewArticles from "../../Articles/NewArticle";
@@ -41,7 +40,15 @@ const Menu = ({ history }) => {
               flexDirection: "column"
             }}
           >
-            <Link to={`/authors/${user._id}`}>Личный кабинет</Link>
+            <button
+              name="user"
+              onClick={() => {
+                history.push(`/authors/${user._id}`);
+              }}
+            >
+              Личный кабинет
+            </button>
+
             <button name="user" onClick={showNewArticle}>
               Добавить статью
             </button>
@@ -53,7 +60,6 @@ const Menu = ({ history }) => {
             >
               Мои статьи
             </button>
-            <Link to="/articles">На главную</Link>
             <button name="user" onClick={logout}>
               Выйти
             </button>

@@ -1,0 +1,16 @@
+button {
+  grid-column: 2 / 3;
+}
+form {
+  display: grid;
+  grid-template-columns: 50fr 1fr;
+  grid-gap: 50px;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+.full-width {
+  grid-column: 1 / 3;
+}

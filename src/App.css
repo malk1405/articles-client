@@ -5,7 +5,7 @@
 .center {
   text-align: center;
   padding: 10px;
-  color: darkblue;
+  color: rgb(17, 17, 19);
   text-shadow: 2px 2px rgb(151, 122, 179);
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -14,7 +14,7 @@
   text-align: center;
 }
 body {
-  background: url("img/10.png") no-repeat;
+  /* background: url("img/10.png") no-repeat; */
   background-size: 100%;
 }
 .rounded {
@@ -56,9 +56,9 @@ body {
 .grid-container {
   display: grid;
   grid-template-areas:
-    "g-logo g-banner g-banner g-banner"
-    ". g-authors g-find g-find"
-    ". g-main . .";
+    "g-logo g-banner "
+    "g-nav g-nav"
+    "g-main g-main ";
   grid-gap: 15px;
   padding: 0px;
 }
@@ -71,8 +71,13 @@ body {
 main {
   grid-area: g-main;
 }
+nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: yellowgreen;
+  grid-area: g-nav;
+}
 .find {
-  grid-area: g-find;
   display: flex;
   justify-content: flex-end;
 }
@@ -98,8 +103,20 @@ main {
     0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.authors {
-  grid-area: g-authors;
+.links {
+  height: 100%;
+  display: flex;
+  align-content: center;
+}
+
+.links > a {
+  text-decoration: none;
+  margin: 0 1rem;
+}
+.links > a:hover,
+.links > a:hover,
+.active-link {
+  background-color: red;
 }
 .item5 {
   grid-area: footer;

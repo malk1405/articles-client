@@ -8,6 +8,10 @@ const Main = ({ location: { pathname } }) => {
   const context = useContext(AuthContext);
   const id = pathname.split("/")[2];
 
+  const handleDelete = ({ target: { name } }) => {
+    setDeletedData({ id: name });
+    setIsDeleting(true);
+  };
   const {
     isFetching: isLoading,
     setUrl: setLoadUrl,
@@ -43,11 +47,6 @@ const Main = ({ location: { pathname } }) => {
     [pathname]
   );
 
-  const handleDelete = id => {
-    setDeletedData({ id });
-    setIsDeleting(true);
-  };
-
   if (isLoading | isDeleting) return <p>Загружаю...</p>;
   if (errorText) return <p>{errorText}</p>;
   return (
@@ -59,11 +58,16 @@ const Main = ({ location: { pathname } }) => {
               {el.title} {el.publicationDate}{" "}
               {context.user && context.user._id === id ? (
                 <button
-                  onClick={() => {
-                    handleDelete(el._id);
+                  name={el._id}
+                  style={{
+                    backgroundColor: "#c95991",
+                    borderRadius: "50%",
+                    border: "none",
+                    color: "white"
                   }}
+                  onClick={handleDelete}
                 >
-                  Удалить
+                  -
                 </button>
               ) : null}
             </div>

@@ -4,7 +4,7 @@ import Registration from "../../Containers/Registration/Registration";
 import logo from "./logo.gif";
 import "./Navigation.css";
 import Menu from "./Menu/Menu";
-import { Link, withRouter } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 
 const Navigation = ({ history }) => {
@@ -30,24 +30,38 @@ const Navigation = ({ history }) => {
           Кафедра 304 "Вычислительные машины, системы и сети"
         </h2>
       </div>
-
-      <Link to={"/authors"} className="authors h3">
-        Список авторов
-      </Link>
-      <div className="find">
-        <AuthContext.Consumer>
-          {({ user }) => (user !== null ? <Menu /> : <Registration />)}
-        </AuthContext.Consumer>
-        <form onSubmit={handleSubmit}>
-          <input
-            value={values.search || ""}
-            onChange={handleChange}
-            type="text"
-            name="search"
-            placeholder="Поиск.."
-          />
-        </form>
-      </div>
+      <nav>
+        <div className="links">
+          <NavLink
+            activeClassName="active-link"
+            to={"/authors"}
+            className="authors h3"
+          >
+            Список авторов
+          </NavLink>
+          <NavLink
+            activeClassName="active-link"
+            to={"/articles"}
+            className="authors h3"
+          >
+            Список статей
+          </NavLink>
+        </div>
+        <div className="find">
+          <AuthContext.Consumer>
+            {({ user }) => (user !== null ? <Menu /> : <Registration />)}
+          </AuthContext.Consumer>
+          <form onSubmit={handleSubmit}>
+            <input
+              value={values.search || ""}
+              onChange={handleChange}
+              type="text"
+              name="search"
+              placeholder="Поиск.."
+            />
+          </form>
+        </div>
+      </nav>
     </>
   );
 };
