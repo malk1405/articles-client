@@ -5,7 +5,7 @@ const useForm = ({ initialValue = {}, submit = () => {} } = {}) => {
 
   const handleSubmit = event => {
     if (event) event.preventDefault();
-    submit();
+    submit({ ...values });
   };
 
   const handleChange = event => {
