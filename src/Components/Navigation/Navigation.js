@@ -33,16 +33,16 @@ const Navigation = ({ history }) => {
       <nav>
         <div className="links">
           <NavLink
-            activeClassName="active-link"
+            activeClassName="nav__link-active"
             to={"/authors"}
-            className="authors h3"
+            className="nav__link"
           >
             Список авторов
           </NavLink>
           <NavLink
-            activeClassName="active-link"
+            activeClassName="nav__link-active"
             to={"/articles"}
-            className="authors h3"
+            className="nav__link"
           >
             Список статей
           </NavLink>
