@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useAxios from "../../hooks/useAxios";
+import "./li.css";
 
 const Info = ({ pathname }) => {
   const [user, setUser] = useState({});
@@ -25,11 +26,16 @@ const Info = ({ pathname }) => {
   if (errorText) return <p>{errorText}</p>;
   if (!user) return <p>Пользователь не найден</p>;
   return (
-    <ul>
-      <li>Имя: {user.name}</li>
+    <ul className="border">
       <li>Фамилия: {user.lastname}</li>
+      <li>Имя: {user.name}</li>
+      <li>Отчество: {user.patronym}</li>
       <li>Дата рождения:</li>
       <li>Email: {user.email}</li>
+      <li>Телефон: {user.tel}</li>
+      <li>Должность: {user.post}</li>
+      <li>Академическая степень:{user.acDeg}</li>
+      <li>Доля ставки: {user.salary}</li>
     </ul>
   );
 };
