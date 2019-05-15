@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import useForm from "../../hooks/useForm";
 import { FormContext } from "../../Context/form";
 
@@ -6,16 +6,29 @@ const Form = ({ className, children }) => {
   const { fields, onSubmit } = useContext(FormContext);
   const getValues = () => {
     const values = {};
-    fields.forEach(({ name, value }) => {
-      values[name] = value;
+    fields.forEach(({ name, value, type }) => {
+      if (type === "date") {
+        const d = new Date(value);
+        const normalize = n => (n < 10 ? "0" + n : "" + n);
+        values[name] = `${d.getFullYear()}-${normalize(
+          d.getMonth() + 1
+        )}-${normalize(d.getDate())}`;
+      } else values[name] = value;
     });
     return values;
   };
 
-  const { values, handleChange, handleSubmit } = useForm({
-    initialValue: getValues,
+  const { values, setValues, handleChange, handleSubmit } = useForm({
     submit: onSubmit
   });
+
+  useEffect(
+    () => {
+      setValues(getValues(fields));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fields]
+  );
 
   return (
     <form className={className} onSubmit={handleSubmit}>

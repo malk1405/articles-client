@@ -48,6 +48,7 @@ const Registration = () => {
       {!isVisible ? null : (
         <Backdrop hide={hide}>
           <FormHandler
+            className="modal"
             loadingUrl={signIn ? "/api/auth/signin" : "/api/auth/signup"}
             fetchingUrl={signIn ? "/api/auth" : "/api/authors"}
             method="post"

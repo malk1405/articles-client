@@ -7,7 +7,8 @@ const FormHandler = ({
   loadingUrl,
   fetchingUrl,
   method,
-  children
+  children,
+  className
 }) => {
   const [errorText, setErrorText] = useState("");
   const [fields, setFields] = useState([]);
@@ -43,6 +44,7 @@ const FormHandler = ({
       setFetchingUrl(fetchingUrl);
       setIsLoading(true);
       setIsFetching(false);
+      setErrorText("");
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [loadingUrl, fetchingUrl, method]
@@ -60,9 +62,10 @@ const FormHandler = ({
   );
 
   return (
-    <div className="modal">
-      {isLoading ? <p>Загрузка формы...</p> : null}
-      {fields.length ? (
+    <div className={className}>
+      {isLoading ? (
+        <p>Загрузка формы...</p>
+      ) : fields.length ? (
         <FormContext.Provider value={value}>{children}</FormContext.Provider>
       ) : (
         <p>Форма пуста</p>

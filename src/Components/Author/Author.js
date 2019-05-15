@@ -1,18 +1,42 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../Context/auth";
-import Info from "./Info";
-import Home from "./Home";
+import FormHandler from "../../Containers/FormHandler/FormHandler";
+import List from "./List";
+import Form from "../Form/Form";
 
-const Author = props => {
-  const { pathname } = props.location;
-  const id = pathname.split("/")[2];
+const Author = ({ location: { pathname } }) => {
+  const { user, login } = useContext(AuthContext);
+  const [state, setState] = useState({ list: true, url: `/api/${pathname}` });
+
+  useEffect(() => {
+    setState({
+      list: !user || user._id !== pathname.split("/")[2],
+      url: `/api/${pathname}`
+    });
+  }, [user, pathname]);
+
+  const onSuccess = ({ data: user }) => {
+    const { _id, name, lastname } = user;
+    login({ _id, name, lastname });
+  };
+
   return (
-    <AuthContext.Consumer>
-      {({ user, login }) => {
-        if (!user || user._id !== id) return <Info pathname={pathname} />;
-        return <Home user={user} login={login} />;
-      }}
-    </AuthContext.Consumer>
+    <FormHandler
+      loadingUrl={state.url}
+      fetchingUrl={state.url}
+      method="put"
+      onSuccess={onSuccess}
+    >
+      {state.list ? (
+        <List />
+      ) : (
+        <Form className="signup-form">
+          <button type="submit" className="button">
+            Сохранить изменения
+          </button>
+        </Form>
+      )}
+    </FormHandler>
   );
 };
 
