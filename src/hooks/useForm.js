@@ -22,6 +22,7 @@ const useForm = ({ initialValue = {}, submit = () => {} } = {}) => {
 
   return {
     values,
+    setValues,
     handleChange,
     handleSubmit,
     handleReset

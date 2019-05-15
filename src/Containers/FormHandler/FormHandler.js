@@ -12,14 +12,23 @@ const FormHandler = ({
   const [errorText, setErrorText] = useState("");
   const [fields, setFields] = useState([]);
 
-  const { setData, isFetching, setIsFetching } = useAxios({
+  const {
+    setUrl: setFetchingUrl,
+    setData,
+    isFetching,
+    setIsFetching
+  } = useAxios({
     url: fetchingUrl,
     method,
     onSuccess,
     onFailure: setErrorText
   });
 
-  const { isFetching: isLoading, setIsFetching: setIsLoading } = useAxios({
+  const {
+    setUrl: setLoadingUrl,
+    isFetching: isLoading,
+    setIsFetching: setIsLoading
+  } = useAxios({
     isFetching: true,
     url: loadingUrl,
     onSuccess: ({ data }) => {
@@ -30,6 +39,8 @@ const FormHandler = ({
 
   useEffect(
     () => {
+      setLoadingUrl(loadingUrl);
+      setFetchingUrl(fetchingUrl);
       setIsLoading(true);
       setIsFetching(false);
     },

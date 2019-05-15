@@ -9,17 +9,34 @@ import Form from "../../Components/Form/Form";
 const Registration = () => {
   const { isVisible, show, hide } = useVisibility(false);
   const { login } = useContext(AuthContext);
-  const [loadingUrl, setLoadingUrl] = useState();
-  const [fetchingUrl, setFetchingUrl] = useState();
+  const [signIn, setSignIn] = useState(true);
 
   const showForm = ({ target: { name } }) => {
     show();
-    setLoadingUrl(name === "signin" ? "/api/auth/signin" : "/api/auth/signup");
-    setFetchingUrl(name === "signin" ? "/api/auth" : "/api/authors");
+    setSignIn(name === "signin");
   };
   const onSuccess = ({ data: { user } }) => {
     login(user);
   };
+  const buttons = [
+    <button type="submit" key={0} className="button">
+      {signIn ? "Войти" : "Регистрация"}
+    </button>
+  ];
+
+  if (signIn)
+    buttons.push(
+      <button
+        type="button"
+        name="signup"
+        onClick={showForm}
+        key={1}
+        className="button"
+      >
+        Регистрация
+      </button>
+    );
+
   return (
     <>
       <button name="signin" onClick={showForm}>
@@ -31,12 +48,12 @@ const Registration = () => {
       {!isVisible ? null : (
         <Backdrop hide={hide}>
           <FormHandler
-            loadingUrl={loadingUrl}
-            fetchingUrl={fetchingUrl}
+            loadingUrl={signIn ? "/api/auth/signin" : "/api/auth/signup"}
+            fetchingUrl={signIn ? "/api/auth" : "/api/authors"}
             method="post"
             onSuccess={onSuccess}
           >
-            <Form className="signup-form" />
+            <Form className="signup-form">{buttons}</Form>
           </FormHandler>
         </Backdrop>
       )}

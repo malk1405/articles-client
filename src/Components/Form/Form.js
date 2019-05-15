@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import useForm from "../../hooks/useForm";
 import { FormContext } from "../../Context/form";
 
-const Form = ({ className, buttons }) => {
+const Form = ({ className, children }) => {
   const { fields, onSubmit } = useContext(FormContext);
   const getValues = () => {
     const values = {};
     fields.forEach(({ name, value }) => {
-      values[name] = value || "";
+      values[name] = value;
     });
     return values;
   };
@@ -23,14 +23,16 @@ const Form = ({ className, buttons }) => {
         return (
           <React.Fragment key={el.name}>
             <label htmlFor={el.name}>{title || el.name}</label>
-            <input {...el} value={values[el.name]} onChange={handleChange} />
+            <input
+              {...el}
+              value={values[el.name] || ""}
+              onChange={handleChange}
+            />
           </React.Fragment>
         );
       })}
-      <button type="submit" className="button">
-        Sign Up
-      </button>
-      {buttons}
+
+      {children}
     </form>
   );
 };
