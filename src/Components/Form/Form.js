@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import useForm from "../../hooks/useForm";
+import { FormContext } from "../../Context/form";
 
-const Form = ({ fields, className, onSubmit, buttons }) => {
+const Form = ({ className, buttons }) => {
+  const { fields, onSubmit } = useContext(FormContext);
   const getValues = () => {
     const values = {};
     fields.forEach(({ name, value }) => {
