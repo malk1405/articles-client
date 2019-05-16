@@ -43,7 +43,7 @@ const useAxios = ({
       };
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isFetching]
+    [isFetching, url]
   );
 
   return { isFetching, setUrl, setData, setIsFetching };

@@ -4,15 +4,26 @@ import { AuthContext } from "../../Context/auth";
 import useAxios from "../../hooks/useAxios";
 import "./newArticle.css";
 
-const Home = ({ hide }) => {
+const url = `/api/authors/?search=`;
+
+const NewArticle = ({ hide }) => {
   const context = useContext(AuthContext);
   const [errorText, setErrorText] = useState("");
   const [authors, setAuthors] = useState([]);
   const [id, setId] = useState(0);
+  const [resAuthors, setResAuthors] = useState([]);
+
   const { setData, setIsFetching } = useAxios({
     url: "/api/articles",
     method: "post",
     onSuccess: hide,
+    onFailure: setErrorText
+  });
+
+  const { setUrl, setIsFetching: setisGetting } = useAxios({
+    onSuccess: ({ data }) => {
+      setResAuthors(data);
+    },
     onFailure: setErrorText
   });
 
@@ -25,7 +36,10 @@ const Home = ({ hide }) => {
         pages: values.pages,
         authors: [
           { authorId, name, lastname },
-          ...authors.map(({ value }) => ({ lastname: value, name: "Vitalina" }))
+          ...authors.map(({ value }) => {
+            const [name, lastname] = value.split(" ");
+            return { name, lastname };
+          })
         ]
       });
       setIsFetching(true);
@@ -51,6 +65,9 @@ const Home = ({ hide }) => {
     const index = result.findIndex(({ id }) => {
       return id === +name;
     });
+    setisGetting(false);
+    setUrl(url + value);
+    setisGetting(true);
     if (index >= 0) {
       result[index] = { ...result[index], value };
       setAuthors(result);
@@ -94,10 +111,20 @@ const Home = ({ hide }) => {
                 Соавтор {index + 1}
               </label>
               <input
+                list={el.id}
                 name={el.id}
                 value={el.value}
                 onChange={handleChangeAuthors}
               />
+              <datalist id={el.id}>
+                {resAuthors.map(({ _id, name, lastname }) => {
+                  return (
+                    <option key={_id}>
+                      {name} {lastname}
+                    </option>
+                  );
+                })}
+              </datalist>
             </React.Fragment>
           );
         })}
@@ -111,4 +138,4 @@ const Home = ({ hide }) => {
     </div>
   );
 };
-export default Home;
+export default NewArticle;
