@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import useForm from "../../hooks/useForm";
 import { FormContext } from "../../Context/form";
 
-const Form = ({ className, children }) => {
+const Form = ({ children, ...props }) => {
   const { fields, onSubmit } = useContext(FormContext);
   const getValues = () => {
     const values = {};
@@ -31,7 +31,7 @@ const Form = ({ className, children }) => {
   );
 
   return (
-    <form className={className} onSubmit={handleSubmit}>
+    <form {...props} onSubmit={handleSubmit}>
       {fields.map(({ title, ...el }) => {
         return (
           <React.Fragment key={el.name}>
