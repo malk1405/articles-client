@@ -29,12 +29,12 @@ const Authors = ({ location: { pathname, search } }) => {
   return (
     <ol>
       {authors.map(el => {
+        let fullName = el.name;
+        if (el.patronym) fullName += " " + el.patronym;
+        fullName += " " + el.lastname;
         return (
           <li key={el._id}>
-            <Link to={`/authors/${el._id}`}>
-              {" "}
-              {`${el.name} ${el.lastname}`}
-            </Link>
+            <Link to={`/authors/${el._id}`}>{fullName}</Link>
           </li>
         );
       })}
