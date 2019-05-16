@@ -18,24 +18,6 @@ const Registration = () => {
   const onSuccess = ({ data: { user } }) => {
     login(user);
   };
-  const buttons = [
-    <button type="submit" key={0} className="button">
-      {signIn ? "Войти" : "Регистрация"}
-    </button>
-  ];
-
-  if (signIn)
-    buttons.push(
-      <button
-        type="button"
-        name="signup"
-        onClick={showForm}
-        key={1}
-        className="button"
-      >
-        Регистрация
-      </button>
-    );
 
   return (
     <>
@@ -54,7 +36,21 @@ const Registration = () => {
             method="post"
             onSuccess={onSuccess}
           >
-            <Form className="signup-form">{buttons}</Form>
+            <Form className="signup-form">
+              <button type="submit" className="form_button">
+                {signIn ? "Войти" : "Регистрация"}
+              </button>
+              {signIn ? (
+                <button
+                  type="button"
+                  name="signup"
+                  onClick={showForm}
+                  className="form_button"
+                >
+                  Регистрация
+                </button>
+              ) : null}
+            </Form>
           </FormHandler>
         </Backdrop>
       )}
