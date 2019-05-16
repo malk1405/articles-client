@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../Context/auth";
 import useAxios from "../../hooks/useAxios";
+import { Link } from "react-router-dom";
 
 const Main = ({ location: { pathname } }) => {
   const [errorText, setErrorText] = useState("");
@@ -52,10 +53,22 @@ const Main = ({ location: { pathname } }) => {
   return (
     <ul>
       {articles.map(el => {
+        const authors = () => {
+          if (!el.authors.length) return null;
+          const result = [];
+          el.authors.forEach(el => {
+            let author = `${el.lastname} ${el.name}`;
+            if (el.authorId)
+              author = <Link to={`/authors/${el.authorId}`}>{author}</Link>;
+            author = <li key={el._id}>{author}</li>;
+            result.push(author);
+          });
+          return <ul>{result}</ul>;
+        };
         return (
           <li key={el._id}>
             <div>
-              {el.title} {el.publicationDate}{" "}
+              {`"${el.title}", ${el.publicationDate}`}{" "}
               {context.user && context.user._id === id ? (
                 <button
                   name={el._id}
@@ -70,6 +83,7 @@ const Main = ({ location: { pathname } }) => {
                   -
                 </button>
               ) : null}
+              {authors()}
             </div>
           </li>
         );
