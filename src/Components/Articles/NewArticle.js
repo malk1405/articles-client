@@ -20,7 +20,7 @@ const articleFields = [
     required: true,
     title: "Дата публикации"
   },
-  { name: "pages", type: "number", title: "Количество страниц" }
+  { name: "pages", type: "number", required: true, title: "Количество страниц" }
 ];
 
 const NewArticle = ({ hide }) => {
@@ -104,95 +104,103 @@ const NewArticle = ({ hide }) => {
   const warning = authors.find(({ _id }) => !_id) ? (
     <span>Незарегистрированные авторы выделены курсивом</span>
   ) : null;
-  return isAdding ? (
-    <Backdrop hide={handleCancel}>
-      <div className="modal">
+
+  return (
+    <>
+      <div className="modal" style={{ display: isAdding ? "none" : "block" }}>
+        {warning}
         <FormContext.Provider
-          value={{ fields: newAuthorFields, onSubmit: handleAddNewAuthor }}
+          value={{ fields: articleFields, onSubmit: handleSubmit }}
         >
-          <div>
-            <p style={{ margin: "1rem" }}>Автор {authors.length + 1} </p>
-          </div>
-          <Form className={"signup-form"}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <button
-                type="submit"
-                style={{
-                  backgroundColor: "green",
-                  borderRadius: "50%",
-                  border: "none",
-                  color: "white",
-                  height: "2rem",
-                  width: "2rem",
-                  padding: "0"
-                }}
-              >
-                +
-              </button>
-              <button
-                type="button"
-                style={{
-                  backgroundColor: "#c95991",
-                  borderRadius: "50%",
-                  border: "none",
-                  color: "white",
-                  height: "2rem",
-                  width: "2rem",
-                  padding: "0"
-                }}
-                onClick={handleCancel}
-              >
-                -
-              </button>
-            </div>
+          <Form className="signup-form" autoComplete="off">
+            {authors.map(({ id, name, lastname, _id }, index) => {
+              return (
+                <React.Fragment key={id}>
+                  <label> Автор {index + 1}: </label>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between"
+                    }}
+                  >
+                    <span style={{ fontStyle: _id ? "normal" : "italic" }}>
+                      {name} {lastname}
+                    </span>
+                    <button
+                      name={id}
+                      type="button"
+                      onClick={handleDeleteAuthor}
+                    >
+                      -
+                    </button>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+            <button
+              className="form_button"
+              type="button"
+              onClick={handleOpenNewAuthor}
+            >
+              Добавить автора
+            </button>
+            <button className="form_button" type="submit">
+              Сохранить
+            </button>
+            <button className="form_button" type="reset">
+              Отменить
+            </button>
           </Form>
+          {errorText !== "" ? <p>{errorText}</p> : null}
         </FormContext.Provider>
       </div>
-    </Backdrop>
-  ) : (
-    <div className="modal">
-      {warning}
-      <FormContext.Provider
-        value={{ fields: articleFields, onSubmit: handleSubmit }}
-      >
-        <Form className="signup-form" autoComplete="off">
-          {authors.map(({ id, name, lastname, _id }, index) => {
-            return (
-              <React.Fragment key={id}>
-                <label> Автор {index + 1}: </label>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between"
-                  }}
-                >
-                  <span style={{ fontStyle: _id ? "normal" : "italic" }}>
-                    {name} {lastname}
-                  </span>
-                  <button name={id} type="button" onClick={handleDeleteAuthor}>
+      {isAdding ? (
+        <Backdrop hide={handleCancel} className="transparent my">
+          <div className="modal">
+            <FormContext.Provider
+              value={{ fields: newAuthorFields, onSubmit: handleAddNewAuthor }}
+            >
+              <div>
+                <p style={{ margin: "1rem" }}>Автор {authors.length + 1} </p>
+              </div>
+              <Form className={"signup-form"}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <button
+                    type="submit"
+                    style={{
+                      backgroundColor: "green",
+                      borderRadius: "50%",
+                      border: "none",
+                      color: "white",
+                      height: "2rem",
+                      width: "2rem",
+                      padding: "0"
+                    }}
+                  >
+                    +
+                  </button>
+                  <button
+                    type="button"
+                    style={{
+                      backgroundColor: "#c95991",
+                      borderRadius: "50%",
+                      border: "none",
+                      color: "white",
+                      height: "2rem",
+                      width: "2rem",
+                      padding: "0"
+                    }}
+                    onClick={handleCancel}
+                  >
                     -
                   </button>
                 </div>
-              </React.Fragment>
-            );
-          })}
-          <button
-            className="form_button"
-            type="button"
-            onClick={handleOpenNewAuthor}
-          >
-            Добавить автора
-          </button>
-          <button className="form_button" type="submit">
-            Сохранить
-          </button>
-          <button className="form_button" type="reset">
-            Отменить
-          </button>
-        </Form>
-        {errorText !== "" ? <p>{errorText}</p> : null}
-      </FormContext.Provider>
-    </div>
+              </Form>
+            </FormContext.Provider>
+          </div>
+        </Backdrop>
+      ) : null}
+    </>
   );
 };
 export default NewArticle;

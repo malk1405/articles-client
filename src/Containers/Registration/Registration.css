@@ -114,3 +114,7 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
 }
+
+.transparent {
+  background: transparent;
+}
