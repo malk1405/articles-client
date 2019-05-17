@@ -2,5 +2,6 @@ import React from "react";
 
 export const FormContext = React.createContext({
   fields: [],
-  onSubmit: () => {}
+  onSubmit: () => {},
+  onChange: () => {}
 });

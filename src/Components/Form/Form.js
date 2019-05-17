@@ -3,7 +3,7 @@ import useForm from "../../hooks/useForm";
 import { FormContext } from "../../Context/form";
 
 const Form = ({ children, ...props }) => {
-  const { fields, onSubmit } = useContext(FormContext);
+  const { fields, onSubmit, onChange } = useContext(FormContext);
   const getValues = () => {
     const values = {};
     fields.forEach(({ name, value, type }) => {
@@ -19,6 +19,7 @@ const Form = ({ children, ...props }) => {
   };
 
   const { values, setValues, handleChange, handleSubmit } = useForm({
+    onChange,
     submit: onSubmit
   });
 
