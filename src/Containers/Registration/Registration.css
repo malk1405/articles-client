@@ -11,6 +11,20 @@
   grid-row-gap: 0.5rem;
 }
 
+.signup-form__button {
+  grid-column: 2;
+  display: block;
+  border-radius: 10px;
+  background: #a9b9d1;
+}
+
+.signup-form__button[type="submit"] {
+  background: #a9d1b1;
+}
+.signup-form__button[type="reset"] {
+  background: #f16542;
+}
+
 .signup-form label {
   font-weight: bold;
 }
@@ -64,12 +78,6 @@
 .signup-form :invalid {
   border-color: rgb(214, 122, 214) !important;
   background: #f1a6c3;
-}
-
-.signup-form button[type="submit"] {
-  display: block;
-  background: rgb(169, 209, 177);
-  border-radius: 10px;
 }
 
 .modal {

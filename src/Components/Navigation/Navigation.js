@@ -47,11 +47,11 @@ const Navigation = ({ history }) => {
             Список статей
           </NavLink>
         </div>
-        <div className="find">
+        <div className="nav__find">
           <AuthContext.Consumer>
             {({ user }) => (user !== null ? <Menu /> : <Registration />)}
           </AuthContext.Consumer>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="nav__find--form">
             <input
               value={values.search || ""}
               onChange={handleChange}

@@ -31,7 +31,7 @@ const Author = ({ location: { pathname } }) => {
         <List />
       ) : (
         <Form className="signup-form">
-          <button className="form_button" type="submit">
+          <button className="signup-form__button" type="submit">
             Сохранить изменения
           </button>
         </Form>

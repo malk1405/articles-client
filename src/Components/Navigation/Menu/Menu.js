@@ -29,9 +29,9 @@ const Menu = ({ history }) => {
   return (
     <>
       <div onMouseEnter={showMenu} onMouseLeave={hideMenu} onClick={hideMenu}>
-        <button name="user" onClick={toggleMenu}>{`${user.name} ${
-          user.lastname
-        }`}</button>
+        <button className="nav__find--button" onClick={toggleMenu}>{`${
+          user.name
+        } ${user.lastname}`}</button>
         {isVisibleMenu ? (
           <div
             style={{
@@ -41,7 +41,7 @@ const Menu = ({ history }) => {
             }}
           >
             <button
-              name="user"
+              className="nav__find--button"
               onClick={() => {
                 history.push(`/authors/${user._id}`);
               }}
@@ -49,18 +49,18 @@ const Menu = ({ history }) => {
               Личный кабинет
             </button>
 
-            <button name="user" onClick={showNewArticle}>
+            <button className="nav__find--button" onClick={showNewArticle}>
               Добавить статью
             </button>
             <button
-              name="user"
+              className="nav__find--button"
               onClick={() => {
                 history.push(`/articles/${user._id}`);
               }}
             >
               Мои статьи
             </button>
-            <button name="user" onClick={logout}>
+            <button className="nav__find--button" onClick={logout}>
               Выйти
             </button>
           </div>

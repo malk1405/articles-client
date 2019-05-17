@@ -71,6 +71,7 @@ body {
 main {
   grid-area: g-main;
 }
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -78,26 +79,17 @@ nav {
   background-color: yellowgreen;
   grid-area: g-nav;
 }
-.find {
+
+.nav__find {
   display: flex;
   justify-content: flex-end;
 }
 
-.find > form {
+.nav__find--button,
+.nav__find--form {
   display: inline-block;
   height: 45px;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4) inset,
-    0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.find button {
-  display: inline-block;
-  height: 45px;
-  padding: 10px;
-  margin-right: 10px;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4) inset,
@@ -124,4 +116,22 @@ nav {
   grid-area: footer;
   margin-left: 250px;
   color: gray;
+}
+
+.add_button,
+.delete_button {
+  border-radius: 50%;
+  border: none;
+  color: white;
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+}
+
+.add_button {
+  background-color: green;
+}
+
+.delete_button {
+  background-color: #c95991;
 }

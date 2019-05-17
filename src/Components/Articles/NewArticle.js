@@ -128,6 +128,7 @@ const NewArticle = ({ hide }) => {
                     <button
                       name={id}
                       type="button"
+                      className="delete_button"
                       onClick={handleDeleteAuthor}
                     >
                       -
@@ -137,16 +138,16 @@ const NewArticle = ({ hide }) => {
               );
             })}
             <button
-              className="form_button"
+              className="signup-form__button"
               type="button"
               onClick={handleOpenNewAuthor}
             >
               Добавить автора
             </button>
-            <button className="form_button" type="submit">
+            <button className="signup-form__button" type="submit">
               Сохранить
             </button>
-            <button className="form_button" type="reset">
+            <button className="signup-form__button" type="reset">
               Отменить
             </button>
           </Form>
@@ -164,31 +165,12 @@ const NewArticle = ({ hide }) => {
               </div>
               <Form className={"signup-form"}>
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  <button
-                    type="submit"
-                    style={{
-                      backgroundColor: "green",
-                      borderRadius: "50%",
-                      border: "none",
-                      color: "white",
-                      height: "2rem",
-                      width: "2rem",
-                      padding: "0"
-                    }}
-                  >
+                  <button type="submit" className="add_button">
                     +
                   </button>
                   <button
                     type="button"
-                    style={{
-                      backgroundColor: "#c95991",
-                      borderRadius: "50%",
-                      border: "none",
-                      color: "white",
-                      height: "2rem",
-                      width: "2rem",
-                      padding: "0"
-                    }}
+                    className="delete_button"
                     onClick={handleCancel}
                   >
                     -

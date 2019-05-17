@@ -21,10 +21,10 @@ const Registration = () => {
 
   return (
     <>
-      <button name="signin" onClick={showForm}>
+      <button name="signin" className="nav__find--button" onClick={showForm}>
         Войти
       </button>
-      <button name="signup" onClick={showForm}>
+      <button name="signup" className="nav__find--button" onClick={showForm}>
         Регистрация
       </button>
       {!isVisible ? null : (
@@ -37,15 +37,15 @@ const Registration = () => {
             onSuccess={onSuccess}
           >
             <Form className="signup-form">
-              <button type="submit" className="form_button">
+              <button type="submit" className="signup-form__button">
                 {signIn ? "Войти" : "Регистрация"}
               </button>
               {signIn ? (
                 <button
                   type="button"
+                  className="signup-form__button"
                   name="signup"
                   onClick={showForm}
-                  className="form_button"
                 >
                   Регистрация
                 </button>
