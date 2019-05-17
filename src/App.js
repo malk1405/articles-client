@@ -12,6 +12,8 @@ import "./App.css";
 import Author from "./Components/Author/Author";
 import Navigation from "./Components/Navigation/Navigation";
 import Authors from "./Components/Authors/Authors";
+import Search from "./Components/Search/Search";
+
 const RedirectFromHome = () => <Redirect to="/articles" />;
 
 const getInitialUser = () => JSON.parse(window.localStorage.getItem("user"));
@@ -48,12 +50,10 @@ const App = () => {
         <Navigation />
         <main>
           <Switch>
-            {/* <Route path="/articles/:articleId" component={Article} /> */}
+            <Route path="/search" component={Search} />
             <Route path="/articles" component={Articles} />
             <Route path="/authors/:authorId" exact component={Author} />
             <Route path="/authors" component={Authors} />
-            {/* <Route path="/new-author" component={NewAuthor} />
-            <Route path="/new-article" component={NewAritcle} /> */}
             <Route path="/" component={RedirectFromHome} />
           </Switch>
         </main>
