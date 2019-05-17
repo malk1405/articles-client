@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-const useForm = ({ initialValue = {}, submit = () => {} } = {}) => {
+const useForm = ({
+  initialValue = {},
+  submit = () => {},
+  onChange = () => {}
+} = {}) => {
   const [values, setValues] = useState(initialValue);
 
   const handleSubmit = event => {
@@ -10,10 +14,11 @@ const useForm = ({ initialValue = {}, submit = () => {} } = {}) => {
 
   const handleChange = event => {
     event.persist();
-    setValues(values => ({
-      ...values,
-      [event.target.name]: event.target.value
-    }));
+    const { name, value } = event.target;
+    const newValues = { ...values, [name]: value };
+
+    setValues(newValues);
+    onChange({ changedField: name, values: newValues });
   };
 
   const handleReset = () => {
