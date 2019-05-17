@@ -68,7 +68,8 @@ const NewArticle = ({ hide }) => {
 
   const handleAddNewAuthor = values => {
     console.log("submit new author", values);
-    setAuthors([...authors, values]);
+    setAuthors([...authors, { id: id + 1, ...values }]);
+    setId(id + 1);
     setIsAdding(false);
   };
 
@@ -76,17 +77,15 @@ const NewArticle = ({ hide }) => {
     setIsAdding(false);
   };
 
-  const handleDeleteAuthor = () => {};
-
-  // const deleteAuthor = ({ target: { htmlFor } }) => {
-  //   const result = [...authors];
-  //   const index = result.findIndex(({ id }) => {
-  //     return id === +htmlFor;
-  //   });
-  //   if (index >= 0) {
-  //     setAuthors(result.filter((el, i) => i !== index));
-  //   }
-  // };
+  const handleDeleteAuthor = ({ target: { name } }) => {
+    const result = [...authors];
+    const index = result.findIndex(({ id }) => {
+      return id === +name;
+    });
+    if (index >= 0) {
+      setAuthors(result.filter((el, i) => i !== index));
+    }
+  };
 
   // const handleChangeAuthors = ({ target: { name, value } }) => {
   //   // const result = [...authors];
