@@ -7,7 +7,7 @@ import Backdrop from "../../Containers/Backdrop/Backdrop";
 import { FormContext } from "../../Context/form";
 import Form from "../Form/Form";
 
-const url = `/api/authors/?search=`;
+const url = `/api/authors/`;
 const newAuthorFields = [
   { name: "name", required: true, title: "Имя" },
   { name: "lastname", required: true, title: "Фамилия" }
@@ -28,7 +28,6 @@ const NewArticle = ({ hide }) => {
   const [errorText, setErrorText] = useState("");
   const [id, setId] = useState(0);
   const [authors, setAuthors] = useState([{ id, ...currentUser }]);
-  const [newAuthor, setNewAuthor] = useState({});
   const [resAuthors, setResAuthors] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
   const { setData, setIsFetching } = useAxios({
@@ -38,12 +37,26 @@ const NewArticle = ({ hide }) => {
     onFailure: setErrorText
   });
 
-  // const { setUrl, setIsFetching: setisGetting } = useAxios({
-  //   onSuccess: ({ data }) => {
-  //     setResAuthors(data);
-  //   },
-  //   onFailure: setErrorText
-  // });
+  const { setUrl, setIsFetching: setisGetting } = useAxios({
+    onSuccess: ({ data }) => {
+      setResAuthors(data);
+    },
+    onFailure: setErrorText
+  });
+
+  useEffect(
+    () => {
+      if (!isAdding) return;
+      console.log("isAdding effect");
+      setUrl(url);
+      setisGetting(true);
+      return () => {
+        setisGetting(false);
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isAdding]
+  );
 
   const handleSubmit = values => {
     setData({
@@ -60,10 +73,6 @@ const NewArticle = ({ hide }) => {
 
   const handleOpenNewAuthor = () => {
     setIsAdding(true);
-  };
-
-  const handleChange = ({ changedValue, values }) => {
-    setNewAuthor(values);
   };
 
   const handleAddNewAuthor = values => {
@@ -87,23 +96,25 @@ const NewArticle = ({ hide }) => {
     }
   };
 
-  // const handleChangeAuthors = ({ target: { name, value } }) => {
-  //   // const result = [...authors];
-  //   // const index = result.findIndex(({ id }) => {
-  //   //   return id === +name;
-  //   // });
-  //   // setisGetting(false);
-  //   // setUrl(url + value);
-  //   // setisGetting(true);
-  //   // if (index >= 0) {
-  //   //   result[index] = { ...result[index], value };
-  //   //   setAuthors(result);
-  //   // }
-  // };
+  const handleChangeAuthors = ({ values: { name = "", lastname = "" } }) => {
+    console.log(name, lastname);
+    setUrl(`${url}?name=${name}&lastname=${lastname}`);
+    setisGetting(true);
+  };
   const warning = authors.find(({ _id }) => !_id) ? (
     <span>Незарегистрированные авторы выделены курсивом</span>
   ) : null;
-
+  const handleAddExistingAuthor = event => {
+    const { id: authorId } = event.target;
+    const index = resAuthors.findIndex(({ _id }) => _id === authorId);
+    if (index >= 0) {
+      const { _id, name, lastname } = resAuthors[index];
+      setAuthors([...authors, { _id, name, lastname, id: id + 1 }]);
+    }
+    setIsAdding(false);
+    setId(id + 1);
+  };
+  console.log(authors);
   return (
     <>
       <div className="modal" style={{ display: isAdding ? "none" : "block" }}>
@@ -155,10 +166,14 @@ const NewArticle = ({ hide }) => {
         </FormContext.Provider>
       </div>
       {isAdding ? (
-        <Backdrop hide={handleCancel} className="transparent my">
+        <Backdrop hide={handleCancel} className="transparent">
           <div className="modal">
             <FormContext.Provider
-              value={{ fields: newAuthorFields, onSubmit: handleAddNewAuthor }}
+              value={{
+                fields: newAuthorFields,
+                onSubmit: handleAddNewAuthor,
+                onChange: handleChangeAuthors
+              }}
             >
               <div>
                 <p style={{ margin: "1rem" }}>Автор {authors.length + 1} </p>
@@ -175,6 +190,22 @@ const NewArticle = ({ hide }) => {
                   >
                     -
                   </button>
+                </div>
+
+                <div
+                  style={{
+                    backgroundColor: "white",
+                    border: "solid 1px black"
+                    // position: "absolute"
+                  }}
+                >
+                  {resAuthors.map(({ _id, name, lastname }) => {
+                    return (
+                      <p key={_id} id={_id} onClick={handleAddExistingAuthor}>
+                        {name} {lastname}
+                      </p>
+                    );
+                  })}
                 </div>
               </Form>
             </FormContext.Provider>
