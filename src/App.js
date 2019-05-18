@@ -7,11 +7,11 @@ import React, {
 } from "react";
 import { AuthContext } from "./Context/auth";
 import { Route, Redirect, Switch } from "react-router-dom";
-import Articles from "./Components/Articles/Articles";
+import Articles from "./Containers/Articles/Articles";
 import "./App.css";
 import Author from "./Components/Author/Author";
 import Navigation from "./Components/Navigation/Navigation";
-import Authors from "./Components/Authors/Authors";
+import Authors from "./Containers/Authors/Authors";
 import Search from "./Components/Search/Search";
 
 const RedirectFromHome = () => <Redirect to="/articles" />;

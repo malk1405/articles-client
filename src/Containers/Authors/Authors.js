@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import useAxios from "../../hooks/useAxios";
 import { Link } from "react-router-dom";
 
-const Authors = ({ location: { pathname, search } }) => {
+const AuthorsContainer = ({ location: { pathname, search } }) => {
   const [authors, setAuthors] = useState([]);
   const [setErrorText] = useState("");
 
@@ -41,4 +41,4 @@ const Authors = ({ location: { pathname, search } }) => {
     </ol>
   );
 };
-export default Authors;
+export default AuthorsContainer;

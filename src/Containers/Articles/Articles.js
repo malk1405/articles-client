@@ -3,7 +3,7 @@ import { AuthContext } from "../../Context/auth";
 import useAxios from "../../hooks/useAxios";
 import { Link } from "react-router-dom";
 
-const Main = ({ location: { pathname } }) => {
+const ArticlesContainer = ({ location: { pathname } }) => {
   const [errorText, setErrorText] = useState("");
   const [articles, setArticles] = useState([]);
   const context = useContext(AuthContext);
@@ -92,4 +92,4 @@ const Main = ({ location: { pathname } }) => {
   );
 };
 
-export default Main;
+export default ArticlesContainer;
