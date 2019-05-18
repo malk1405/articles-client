@@ -46,7 +46,6 @@ const NewArticle = ({ hide }) => {
   useEffect(
     () => {
       if (!isAdding) return;
-      console.log("isAdding effect");
       setUrl(url);
       setisGetting(true);
       return () => {
@@ -75,7 +74,6 @@ const NewArticle = ({ hide }) => {
   };
 
   const handleAddNewAuthor = values => {
-    console.log("submit new author", values);
     setAuthors([...authors, { id: id + 1, ...values }]);
     setId(id + 1);
     setIsAdding(false);
@@ -96,7 +94,6 @@ const NewArticle = ({ hide }) => {
   };
 
   const handleChangeAuthors = ({ values: { name = "", lastname = "" } }) => {
-    console.log(name, lastname);
     setUrl(`${url}?name=${name}&lastname=${lastname}`);
     setisGetting(true);
   };
@@ -113,7 +110,6 @@ const NewArticle = ({ hide }) => {
     setIsAdding(false);
     setId(id + 1);
   };
-  console.log(authors);
   return (
     <>
       <div className="modal" style={{ display: isAdding ? "none" : "block" }}>
