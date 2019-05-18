@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import useAxios from "../../hooks/useAxios";
-import { Link } from "react-router-dom";
+import Authors from "../../Components/Authors/Authors";
 
 const AuthorsContainer = ({ location: { pathname, search } }) => {
   const [authors, setAuthors] = useState([]);
-  const [setErrorText] = useState("");
+  const [errorText, setErrorText] = useState("");
 
   const { isFetching, setIsFetching, setUrl } = useAxios({
     isFetching: true,
@@ -25,20 +25,7 @@ const AuthorsContainer = ({ location: { pathname, search } }) => {
   );
 
   if (isFetching) return <div>Загрузка</div>;
-  if (authors.length === 0) return <div> Авторов нет</div>;
-  return (
-    <ol>
-      {authors.map(el => {
-        let fullName = el.name;
-        if (el.patronym) fullName += " " + el.patronym;
-        fullName += " " + el.lastname;
-        return (
-          <li key={el._id}>
-            <Link to={`/authors/${el._id}`}>{fullName}</Link>
-          </li>
-        );
-      })}
-    </ol>
-  );
+  if (errorText) return <p>{errorText}</p>;
+  return <Authors authors={authors} />;
 };
 export default AuthorsContainer;

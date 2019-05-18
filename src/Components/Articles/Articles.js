@@ -13,7 +13,7 @@ const Articles = ({ articles }) => {
   };
 
   return (
-    <ul>
+    <ol>
       {articles.map(el => {
         const authors = () => {
           if (!el.authors.length) return null;
@@ -39,7 +39,7 @@ const Articles = ({ articles }) => {
           </li>
         );
       })}
-    </ul>
+    </ol>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import useAxios from "../../hooks/useAxios";
 import { getTokens, createQuery } from "../../utils/query";
 import Articles from "../Articles/Articles";
+import Authors from "../Authors/Authors";
 
 const buttons = [
   { name: "articles", title: "Статьи" },
@@ -50,7 +51,7 @@ const Search = ({ location: { search }, history }) => {
   const main = () => {
     switch (pageName) {
       case "authors":
-        return "authors";
+        return <Authors authors={data.authors || []} />;
       default:
         return <Articles articles={data.articles || []} />;
     }
