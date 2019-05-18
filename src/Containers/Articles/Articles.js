@@ -7,10 +7,6 @@ const ArticlesContainer = ({ location: { pathname } }) => {
   const [articles, setArticles] = useState([]);
   const id = pathname.split("/")[2];
 
-  const handleDelete = ({ target: { name } }) => {
-    setDeletedData({ id: name });
-    setIsDeleting(true);
-  };
   const {
     isFetching: isLoading,
     setUrl: setLoadUrl,
@@ -18,19 +14,6 @@ const ArticlesContainer = ({ location: { pathname } }) => {
   } = useAxios({
     onSuccess: ({ data }) => {
       setArticles(data);
-    },
-    onFailure: setErrorText
-  });
-
-  const {
-    isFetching: isDeleting,
-    setData: setDeletedData,
-    setIsFetching: setIsDeleting
-  } = useAxios({
-    url: `/api/articles/`,
-    method: "delete",
-    onSuccess: () => {
-      setIsLoading(true);
     },
     onFailure: setErrorText
   });
@@ -46,9 +29,9 @@ const ArticlesContainer = ({ location: { pathname } }) => {
     [pathname]
   );
 
-  if (isLoading | isDeleting) return <p>Загружаю...</p>;
+  if (isLoading) return <p>Загружаю...</p>;
   if (errorText) return <p>{errorText}</p>;
-  return <Articles articles={articles} handleDelete={handleDelete} id={id} />;
+  return <Articles articles={articles} />;
 };
 
 export default ArticlesContainer;

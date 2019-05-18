@@ -2,8 +2,16 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Context/auth";
 
-const Articles = ({ articles, handleDelete, id }) => {
-  const context = useContext(AuthContext);
+const Articles = ({ articles }) => {
+  const { user } = useContext(AuthContext);
+
+  const isMyArticle = article => {
+    if (!user) return false;
+    return (
+      article.authors.findIndex(({ authorId }) => authorId === user._id) >= 0
+    );
+  };
+
   return (
     <ul>
       {articles.map(el => {
@@ -22,21 +30,10 @@ const Articles = ({ articles, handleDelete, id }) => {
         return (
           <li key={el._id}>
             <div>
-              {`"${el.title}", ${el.publicationDate}`}{" "}
-              {context.user && context.user._id === id ? (
-                <button
-                  name={el._id}
-                  style={{
-                    backgroundColor: "#c95991",
-                    borderRadius: "50%",
-                    border: "none",
-                    color: "white"
-                  }}
-                  onClick={handleDelete}
-                >
-                  -
-                </button>
-              ) : null}
+              <span style={{ fontWeight: isMyArticle(el) ? "bold" : "normal" }}>
+                {el.title}
+              </span>
+              , {el.publicationDate}
               {authors()}
             </div>
           </li>

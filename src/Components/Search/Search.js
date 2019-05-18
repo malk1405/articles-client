@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useAxios from "../../hooks/useAxios";
 import { getTokens, createQuery } from "../../utils/query";
+import Articles from "../Articles/Articles";
 
 const buttons = [
   { name: "articles", title: "Статьи" },
@@ -45,23 +46,35 @@ const Search = ({ location: { search }, history }) => {
   };
 
   const pageName = getPageName(getTokens(search));
-  console.log(pageName);
+
+  const main = () => {
+    switch (pageName) {
+      case "authors":
+        return "authors";
+      default:
+        return <Articles articles={data.articles || []} />;
+    }
+  };
   return (
     <>
-      {buttons.map(({ name, title }) => {
-        const num = data[`${name}Number`];
-        return (
-          <button
-            key={name}
-            name={name}
-            style={{ backgroundColor: pageName === name ? "green" : "grey" }}
-            onClick={handlePush}
-          >
-            {title}
-            {typeof num === "number" ? ` ${num}` : null}
-          </button>
-        );
-      })}
+      <div>
+        {buttons.map(({ name, title }) => {
+          const num = data[`${name}Number`];
+          return (
+            <button
+              key={name}
+              name={name}
+              style={{ backgroundColor: pageName === name ? "green" : "grey" }}
+              onClick={handlePush}
+            >
+              {title}
+              {typeof num === "number" ? ` ${num}` : null}
+            </button>
+          );
+        })}
+      </div>
+
+      {main()}
     </>
   );
 };
