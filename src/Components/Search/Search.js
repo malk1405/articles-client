@@ -4,11 +4,8 @@ import { getTokens, createQuery } from "../../utils/query";
 import Articles from "../Articles/Articles";
 import Authors from "../Authors/Authors";
 
-const buttons = [
-  { name: "articles", title: "Статьи" },
-  { name: "authors", title: "Авторы" }
-];
-const getPageName = tokens => {
+const getPageName = (tokens, buttons) => {
+  if (!buttons.length) return "";
   const index = tokens.findIndex(([name]) => name === "page");
 
   if (index < 0) return buttons[0].name;
@@ -20,7 +17,7 @@ const getPageName = tokens => {
 };
 
 const Search = ({ location: { search }, history }) => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({ buttons: [] });
   const onSuccess = ({ data }) => {
     setData(data);
   };
@@ -46,7 +43,7 @@ const Search = ({ location: { search }, history }) => {
     history.push(createQuery(tokens));
   };
 
-  const pageName = getPageName(getTokens(search));
+  const pageName = getPageName(getTokens(search), data.buttons);
 
   const main = () => {
     switch (pageName) {
@@ -59,7 +56,7 @@ const Search = ({ location: { search }, history }) => {
   return (
     <>
       <div>
-        {buttons.map(({ name, title }) => {
+        {data.buttons.map(({ name, title }) => {
           const num = data[`${name}Number`];
           return (
             <button
