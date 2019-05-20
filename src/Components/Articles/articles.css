@@ -1,0 +1,25 @@
+.articles {
+  margin-right: 1 rem;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 4px;
+  padding: 1rem;
+  list-style: none;
+}
+.article {
+  padding: 1rem;
+  background-color: rgb(87, 202, 202);
+  border: 1px solid black;
+}
+.articles_author {
+  font-size: 0.8rem;
+}
+.articles_author a {
+  text-decoration: none;
+  color: red;
+}
+@media (min-width: 40rem) {
+  .articles {
+    grid-template-columns: auto auto auto;
+  }
+}
