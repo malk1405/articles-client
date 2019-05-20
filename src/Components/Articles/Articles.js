@@ -45,7 +45,7 @@ const Articles = ({ articles }) => {
               <span style={{ fontWeight: isMyArticle(el) ? "bold" : "normal" }}>
                 {el.title}
               </span>
-              , {el.publicationDate}
+              , {new Date(el.publicationDate).getFullYear()}
               {authors()}
             </div>
           </li>

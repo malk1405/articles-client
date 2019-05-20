@@ -87,8 +87,8 @@ const Search = ({ location: { search }, history }) => {
       <div>
         {Array.isArray(data.fields) ? (
           <FormContext.Provider value={{ fields: data.fields, onSubmit }}>
-            <Form fields={data.fields}>
-              <button type="submit">SAve</button>
+            <Form className="signup-form" fields={data.fields}>
+              <button type="submit">Применить</button>
             </Form>
           </FormContext.Provider>
         ) : (

@@ -2,21 +2,27 @@
   margin-right: 1 rem;
   display: grid;
   grid-template-columns: auto auto;
+  /* grid-auto-rows: 1fr; */
   grid-gap: 4px;
   padding: 1rem;
   list-style: none;
 }
 .article {
   padding: 1rem;
-  background-color: rgb(87, 202, 202);
+  background-color: #a9d1b1;
   border: 1px solid black;
 }
 .articles_author {
   font-size: 0.8rem;
+  list-style: none;
 }
 .articles_author a {
   text-decoration: none;
-  color: red;
+  font-weight: 600;
+  color: black;
+}
+.articles_author a:hover {
+  color: grey;
 }
 @media (min-width: 40rem) {
   .articles {
