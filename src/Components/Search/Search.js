@@ -3,6 +3,8 @@ import useAxios from "../../hooks/useAxios";
 import { getTokens, createQuery } from "../../utils/query";
 import Articles from "../Articles/Articles";
 import Authors from "../Authors/Authors";
+import Form from "../Form/Form";
+import { FormContext } from "../../Context/form";
 
 const getPageName = (tokens, buttons) => {
   if (!buttons.length) return "";
@@ -21,7 +23,6 @@ const Search = ({ location: { search }, history }) => {
   const onSuccess = ({ data }) => {
     setData(data);
   };
-
   const { setUrl, setIsFetching } = useAxios({ onSuccess });
   useEffect(
     () => {
@@ -40,6 +41,18 @@ const Search = ({ location: { search }, history }) => {
     let tokens = getTokens(search).filter(([name]) => name !== "page");
     tokens.push(["page", name]);
 
+    history.push(createQuery(tokens));
+  };
+
+  const onSubmit = values => {
+    let tokens = {};
+    getTokens(search).forEach(([name, value]) => {
+      tokens[name] = value;
+    });
+    tokens = { ...tokens, ...values };
+    tokens = Object.keys(tokens)
+      .map(el => [el, tokens[el]])
+      .filter(([name, value]) => value);
     history.push(createQuery(tokens));
   };
 
@@ -71,7 +84,17 @@ const Search = ({ location: { search }, history }) => {
           );
         })}
       </div>
-
+      <div>
+        {Array.isArray(data.fields) ? (
+          <FormContext.Provider value={{ fields: data.fields, onSubmit }}>
+            <Form fields={data.fields}>
+              <button type="submit">SAve</button>
+            </Form>
+          </FormContext.Provider>
+        ) : (
+          "bad"
+        )}
+      </div>
       {main()}
     </>
   );
