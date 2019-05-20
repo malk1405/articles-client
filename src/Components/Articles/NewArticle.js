@@ -59,8 +59,6 @@ const NewArticle = ({ hide }) => {
   const handleSubmit = values => {
     setData({
       ...values,
-      publicationDate: values.publicationDate,
-      pages: values.pages,
       authors: authors.map(({ id, _id: authorId, ...el }) => ({
         authorId,
         ...el
