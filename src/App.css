@@ -55,18 +55,19 @@ body {
 }
 .grid-container {
   display: grid;
+
   grid-template-areas:
-    "g-logo g-banner "
-    "g-nav g-nav"
-    "g-main g-main ";
-  grid-gap: 15px;
+    "g-banner"
+    "g-nav"
+    "g-main";
   padding: 0px;
+  grid-gap: 15px;
 }
 .banner {
   grid-area: g-banner;
 }
 .logo {
-  grid-area: g-logo;
+  display: none;
 }
 main {
   grid-area: g-main;
@@ -134,4 +135,18 @@ nav {
 
 .delete_button {
   background-color: #c95991;
+}
+
+@media (min-width: 1070px) {
+  .grid-container {
+    grid-template-areas:
+      "g-logo g-banner "
+      "g-nav g-nav"
+      "g-main g-main ";
+    grid-template-columns: min-content auto;
+  }
+  .logo {
+    grid-area: g-logo;
+    display: block;
+  }
 }
