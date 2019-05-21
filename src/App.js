@@ -10,6 +10,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import Articles from "./Containers/Articles/Articles";
 import "./App.css";
 import Author from "./Components/Author/Author";
+import Article from "./Containers/Article/Article";
 import Navigation from "./Components/Navigation/Navigation";
 import Authors from "./Containers/Authors/Authors";
 import Search from "./Components/Search/Search";
@@ -51,6 +52,7 @@ const App = () => {
         <main>
           <Switch>
             <Route path="/search" component={Search} />
+            <Route path="/articles/:articleId" component={Article} />
             <Route path="/articles" component={Articles} />
             <Route path="/authors/:authorId" exact component={Author} />
             <Route path="/authors" component={Authors} />
