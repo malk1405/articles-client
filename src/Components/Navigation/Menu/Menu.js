@@ -55,7 +55,7 @@ const Menu = ({ history }) => {
             <button
               className="nav__find--button"
               onClick={() => {
-                history.push(`/articles/${user._id}`);
+                history.push(`/search?authorId=${user._id}`);
               }}
             >
               Мои статьи
