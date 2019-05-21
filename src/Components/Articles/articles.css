@@ -1,7 +1,7 @@
 .articles {
   margin-right: 1 rem;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr 1fr;
   /* grid-auto-rows: 1fr; */
   grid-gap: 4px;
   padding: 1rem;
@@ -26,6 +26,6 @@
 }
 @media (min-width: 40rem) {
   .articles {
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }

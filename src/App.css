@@ -3,8 +3,6 @@
 }
 
 .center {
-  padding: 1px;
-  color: rgb(47, 128, 153);
 }
 .h3 {
   text-decoration: underline;
@@ -62,6 +60,8 @@ body {
 }
 .banner {
   grid-area: g-banner;
+  color: rgb(47, 128, 153);
+  text-align: center;
 }
 .logo {
   display: none;
@@ -145,5 +145,9 @@ nav {
   .logo {
     grid-area: g-logo;
     display: block;
+  }
+
+  .banner {
+    text-align: unset;
   }
 }
