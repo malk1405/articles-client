@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AuthorsList from "../AuthorsList/AuthorsList";
 
 const Article = ({ currentId, article, checked, index, handleChange }) => {
   const isMy = () => {
@@ -28,18 +29,7 @@ const Article = ({ currentId, article, checked, index, handleChange }) => {
         </Link>
         , {new Date(article.publicationDate).getFullYear()}
       </div>
-      <ul>
-        {article.authors.map(({ _id, authorId, name, lastname }) => {
-          let author = `${name} ${lastname}`;
-          if (authorId)
-            author = <Link to={`/authors/${authorId}`}>{author}</Link>;
-          return (
-            <li className="articles_author" key={_id}>
-              {author}
-            </li>
-          );
-        })}
-      </ul>
+      <AuthorsList authors={article.authors} className="articles_author" />
     </>
   );
 };

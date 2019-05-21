@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
+import AuthorsList from "../../Components/AuthorsList/AuthorsList";
 
 const ArticlesContainer = ({ location: { pathname } }) => {
   const [errorText, setErrorText] = useState("");
-  const [articles, setArticles] = useState([]);
+  const [article, setArticle] = useState();
   const id = pathname.split("/")[2];
   const {
     isFetching: isLoading,
@@ -11,7 +12,7 @@ const ArticlesContainer = ({ location: { pathname } }) => {
     setIsFetching: setIsLoading
   } = useAxios({
     onSuccess: ({ data }) => {
-      setArticles(data);
+      setArticle(data);
     },
     onFailure: setErrorText
   });
@@ -25,7 +26,20 @@ const ArticlesContainer = ({ location: { pathname } }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [pathname]
   );
-  return <p> Статья </p>;
+  if (!article) return <p>Статья не найдена</p>;
+  return (
+    <div>
+      <h2>{article.title}</h2>
+      <p>Год публикации: {new Date(article.publicationDate).getFullYear()}</p>
+      <p>Количество страниц: {article.pages}</p>
+      {Array.isArray(article.authors) && article.authors.length > 0 ? (
+        <>
+          <p>Авторы: </p>
+          <AuthorsList authors={article.authors} />
+        </>
+      ) : null}
+    </div>
+  );
 };
 
 export default ArticlesContainer;
