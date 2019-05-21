@@ -33,7 +33,7 @@
 .signup-form input,
 .signup-form select {
   display: block;
-  /* width: 100%; */
+  width: 100%;
 }
 
 /* .signup-form input[type="checkbox"] */

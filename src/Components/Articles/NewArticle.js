@@ -184,19 +184,24 @@ const NewArticle = ({ hide }) => {
                     -
                   </button>
                 </div>
-
-                <div className="author_list">
-                  {resAuthors.length > 0 ? (
-                    resAuthors.map(({ _id, name, lastname }) => {
-                      return (
-                        <p key={_id} id={_id} onClick={handleAddExistingAuthor}>
-                          {name} {lastname}
-                        </p>
-                      );
-                    })
-                  ) : (
-                    <p>Результатов не найдено</p>
-                  )}
+                <div>
+                  <div className="author_list">
+                    {resAuthors.length > 0 ? (
+                      resAuthors.map(({ _id, name, lastname }) => {
+                        return (
+                          <p
+                            key={_id}
+                            id={_id}
+                            onClick={handleAddExistingAuthor}
+                          >
+                            {name} {lastname}
+                          </p>
+                        );
+                      })
+                    ) : (
+                      <p>Результатов не найдено</p>
+                    )}
+                  </div>
                 </div>
               </Form>
             </FormContext.Provider>
