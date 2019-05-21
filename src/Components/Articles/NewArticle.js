@@ -171,7 +171,7 @@ const NewArticle = ({ hide }) => {
               <div>
                 <p style={{ margin: "1rem" }}>Автор {authors.length + 1} </p>
               </div>
-              <Form className={"signup-form"}>
+              <Form className={"signup-form"} autoComplete="off">
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <button type="submit" className="add_button">
                     +
@@ -185,20 +185,18 @@ const NewArticle = ({ hide }) => {
                   </button>
                 </div>
 
-                <div
-                  style={{
-                    backgroundColor: "white",
-                    border: "solid 1px black"
-                    // position: "absolute"
-                  }}
-                >
-                  {resAuthors.map(({ _id, name, lastname }) => {
-                    return (
-                      <p key={_id} id={_id} onClick={handleAddExistingAuthor}>
-                        {name} {lastname}
-                      </p>
-                    );
-                  })}
+                <div className="author_list">
+                  {resAuthors.length > 0 ? (
+                    resAuthors.map(({ _id, name, lastname }) => {
+                      return (
+                        <p key={_id} id={_id} onClick={handleAddExistingAuthor}>
+                          {name} {lastname}
+                        </p>
+                      );
+                    })
+                  ) : (
+                    <p>Результатов не найдено</p>
+                  )}
                 </div>
               </Form>
             </FormContext.Provider>

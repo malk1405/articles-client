@@ -14,3 +14,16 @@ form {
 .full-width {
   grid-column: 1 / 3;
 }
+
+.author_list {
+  background-color: white;
+  border: solid 1px black;
+  position: relative;
+  height: min-content;
+  min-height: 100%;
+}
+
+.author_list p {
+  padding: 0.2rem 0.5rem;
+  margin: 0;
+}
