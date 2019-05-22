@@ -32,7 +32,8 @@ const useAxios = ({
           if (axios.isCancel(err)) {
           } else {
             setIsFetching(false);
-            onFailure(err.response.data.message);
+            if (err.response) onFailure(err.response.data.message);
+            else onFailure("Неизвестная ошибка");
           }
         }
       };
