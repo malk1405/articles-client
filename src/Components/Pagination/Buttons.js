@@ -15,7 +15,10 @@ const normalizeCurrentPage = (currentPage, pages) => {
 const Buttons = ({ pages, location: { search, pathname } }) => {
   if (typeof pages !== "number" || pages <= 1) return null;
 
-  const currentPage = normalizeCurrentPage(+getTokensObject(search).pageNumber);
+  const currentPage = normalizeCurrentPage(
+    +getTokensObject(search).pageNumber,
+    pages
+  );
   const buttons = [{ key: "first", value: 1 }];
   if (currentPage > 3) buttons.push({ key: "1...", value: "..." });
   if (currentPage > 2) buttons.push({ key: "prev", value: currentPage - 1 });
