@@ -13,15 +13,9 @@ import Buttons from "../Pagination/Buttons";
 
 const limits = [3, 6, 9, 12, 15];
 const getPageName = (tokens, buttons) => {
-  if (!buttons.length) return "";
-  const index = tokens.findIndex(([name]) => name === "page");
-
-  if (index < 0) return buttons[0].name;
-
-  const value = tokens[index][1];
-
-  if (!buttons.find(({ name }) => name === value)) return buttons[0].name;
-  return value;
+  const page = tokens.find(([name]) => name === "page");
+  if (!page || !buttons[page[1]]) return Object.keys(buttons)[0];
+  return page[1];
 };
 
 const getInitLimit = search => {
@@ -30,7 +24,7 @@ const getInitLimit = search => {
 };
 
 const Search = ({ location: { search }, history }) => {
-  const [data, setData] = useState({ buttons: [] });
+  const [data, setData] = useState();
   const [limit, setLimit] = useState(getInitLimit(search));
   const onSuccess = ({ data }) => {
     setData(data);
@@ -55,7 +49,7 @@ const Search = ({ location: { search }, history }) => {
     tokens.limit = limit;
     tokens = Object.keys(tokens)
       .map(el => [el, tokens[el]])
-      .filter(([name, value]) => value);
+      .filter(([, value]) => value);
     history.push(createQueryFromArray(tokens));
   }, [limit]);
 
@@ -75,7 +69,9 @@ const Search = ({ location: { search }, history }) => {
     history.push(createQueryFromArray(tokens));
   };
 
-  const pageName = getPageName(getTokensArray(search), data.buttons);
+  const pageName = data
+    ? getPageName(getTokensArray(search), data.buttons)
+    : "";
 
   const main = () => {
     switch (pageName) {
@@ -92,44 +88,34 @@ const Search = ({ location: { search }, history }) => {
     tokens.limit = value;
     tokens = Object.keys(tokens)
       .map(el => [el, tokens[el]])
-      .filter(([name, value]) => value);
+      .filter(([, value]) => value);
     history.push(createQueryFromArray(tokens));
-
-    console.log(tokens);
   };
 
-  const getPageNumber = number => {
-    if (!number) return 1;
+  const getPageNumber = number => (number ? Math.ceil(number / limit) : 1);
 
-    return Math.ceil(number / limit);
-  };
-  let pageNumber = 1;
-  switch (pageName) {
-    case "authors":
-      if (data) pageNumber = getPageNumber(data.authorsNumber);
-      break;
-
-    default:
-      if (data) pageNumber = getPageNumber(data.articlesNumber);
-      break;
-  }
+  if (typeof data !== "object") return null;
   return (
     <>
       <div>
-        {data.buttons.map(({ name, title }) => {
-          const num = data[`${name}Number`];
-          return (
-            <button
-              key={name}
-              name={name}
-              style={{ backgroundColor: pageName === name ? "green" : "grey" }}
-              onClick={handlePush}
-            >
-              {title}
-              {typeof num === "number" ? ` ${num}` : null}
-            </button>
-          );
-        })}
+        {typeof data.buttons !== "object"
+          ? null
+          : Object.keys(data.buttons).map(name => {
+              const { title, number } = data.buttons[name];
+              return (
+                <button
+                  key={name}
+                  name={name}
+                  style={{
+                    backgroundColor: pageName === name ? "green" : "grey"
+                  }}
+                  onClick={handlePush}
+                >
+                  {title}
+                  {typeof number === "number" ? ` ${number}` : null}
+                </button>
+              );
+            })}
       </div>
       <div>
         {Array.isArray(data.fields) ? (
@@ -147,7 +133,7 @@ const Search = ({ location: { search }, history }) => {
           <option key={el}>{el}</option>
         ))}
       </select>
-      <Buttons pages={pageNumber} />
+      <Buttons pages={getPageNumber(data.buttons[pageName].number)} />
       {main()}
     </>
   );
