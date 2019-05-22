@@ -25,7 +25,7 @@ const Buttons = ({ pages, location: { search, pathname } }) => {
   if (currentPage < pages - 2) buttons.push({ key: "2...", value: "..." });
   if (currentPage < pages) buttons.push({ key: "last", value: pages });
   const query = createQueryFromArray(
-    getTokensArray(search).filter(([name]) => name != "pageNumber")
+    getTokensArray(search).filter(([name]) => name !== "pageNumber")
   );
   return buttons.map(({ key, value }) => {
     return typeof value === "number" ? (
