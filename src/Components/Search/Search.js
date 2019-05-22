@@ -6,6 +6,7 @@ import Authors from "../Authors/Authors";
 import Form from "../Form/Form";
 import { FormContext } from "../../Context/form";
 
+const limits = [2, 6, 9, 12, 15];
 const getPageName = (tokens, buttons) => {
   if (!buttons.length) return "";
   const index = tokens.findIndex(([name]) => name === "page");
@@ -18,15 +19,29 @@ const getPageName = (tokens, buttons) => {
   return value;
 };
 
+const getTokenArray = search => {
+  let result = {};
+  getTokens(search).forEach(([name, value]) => {
+    result[name] = value;
+  });
+  return result;
+};
+
+const getInitLimit = search => {
+  let tokens = getTokenArray(search);
+  return tokens.limit || limits[0];
+};
+
 const Search = ({ location: { search }, history }) => {
   const [data, setData] = useState({ buttons: [] });
+  const [limit, setLimit] = useState(getInitLimit(search));
   const onSuccess = ({ data }) => {
     setData(data);
   };
   const { setUrl, setIsFetching } = useAxios({ onSuccess });
   useEffect(
     () => {
-      const url = "/api/search/" + search;
+      const url = "/api/search" + search;
       setIsFetching(true);
       setUrl(url);
       return () => {
@@ -37,6 +52,16 @@ const Search = ({ location: { search }, history }) => {
     [search]
   );
 
+  useEffect(() => {
+    let tokens = getTokenArray(search);
+
+    tokens.limit = limit;
+    tokens = Object.keys(tokens)
+      .map(el => [el, tokens[el]])
+      .filter(([name, value]) => value);
+    history.push(createQuery(tokens));
+  }, [limit]);
+
   const handlePush = ({ target: { name } }) => {
     let tokens = getTokens(search).filter(([name]) => name !== "page");
     tokens.push(["page", name]);
@@ -45,10 +70,7 @@ const Search = ({ location: { search }, history }) => {
   };
 
   const onSubmit = values => {
-    let tokens = {};
-    getTokens(search).forEach(([name, value]) => {
-      tokens[name] = value;
-    });
+    let tokens = getTokenArray(getTokens(search));
     tokens = { ...tokens, ...values };
     tokens = Object.keys(tokens)
       .map(el => [el, tokens[el]])
@@ -66,6 +88,41 @@ const Search = ({ location: { search }, history }) => {
         return <Articles articles={data.articles || []} />;
     }
   };
+
+  const handleLimitChange = ({ target: { name, value } }) => {
+    setLimit(value);
+    let tokens = getTokenArray(search);
+    tokens.limit = value;
+    tokens = Object.keys(tokens)
+      .map(el => [el, tokens[el]])
+      .filter(([name, value]) => value);
+    history.push(createQuery(tokens));
+
+    console.log(tokens);
+  };
+
+  const getPageNumber = number => {
+    if (!number) return 1;
+
+    return Math.ceil(number / limit);
+  };
+  let pageNumber = 1;
+  switch (pageName) {
+    case "authors":
+      console.log(data);
+      if (data) pageNumber = getPageNumber(data.authorsNumber);
+      break;
+
+    default:
+      if (data) pageNumber = getPageNumber(data.articlesNumber);
+      break;
+  }
+
+  const pageButtons = [];
+  if (pageNumber > 1)
+    for (let i = 1; i <= pageNumber; i++) {
+      pageButtons.push(i);
+    }
   return (
     <>
       <div>
@@ -95,6 +152,14 @@ const Search = ({ location: { search }, history }) => {
           "bad"
         )}
       </div>
+      <select onChange={handleLimitChange} value={limit}>
+        {limits.map(el => (
+          <option key={el}>{el}</option>
+        ))}
+      </select>
+      {pageButtons.map(el => (
+        <button key={el}>{el}</button>
+      ))}
       {main()}
     </>
   );
