@@ -11,14 +11,19 @@ const limits = [3, 6, 9, 12, 15];
 const getPageName = (search, buttons) =>
   getParameters(search).page || Object.keys(buttons)[0];
 
-const getInitLimit = search => getParameters(search).limit || limits[0];
+const getInitLimit = search => +getParameters(search).limit || limits[0];
 
 const getCurrentPage = search => +getParameters(search).pageNumber || 1;
+
+const getBaseIndex = (limit, currentPage) =>
+  limit ? limit * (currentPage - 1) + 1 : 1;
 
 const Search = ({ location: { search }, history }) => {
   const [data, setData] = useState();
   const [limit, setLimit] = useState(getInitLimit(search));
+  const [baseIndex, setBaseIndex] = useState(1);
   const onSuccess = ({ data }) => {
+    setBaseIndex(getBaseIndex(limit, getCurrentPage(search)));
     setData(data);
   };
   const { setUrl, setIsFetching } = useAxios({ onSuccess });
@@ -56,17 +61,20 @@ const Search = ({ location: { search }, history }) => {
   const main = () => {
     switch (pageName) {
       case "authors":
-        return <Authors authors={data.authors || []} />;
+        return <Authors authors={data.authors || []} baseIndex={5} />;
       default:
-        return <Articles articles={data.articles || []} />;
+        return (
+          <Articles articles={data.articles || []} baseIndex={baseIndex} />
+        );
     }
   };
 
   const handleLimitChange = ({ target: { value } }) => {
-    setLimit(value);
+    setLimit(+value);
   };
 
-  const getPageNumber = number => (number ? Math.ceil(number / limit) : 1);
+  const getPageNumber = number =>
+    number && limit ? Math.ceil(number / limit) : 1;
 
   if (typeof data !== "object") return null;
   return (

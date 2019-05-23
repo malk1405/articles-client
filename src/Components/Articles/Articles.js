@@ -2,10 +2,9 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../../Context/auth";
 import "./articles.css";
 import useAxios from "../../hooks/useAxios";
-import { withRouter } from "react-router-dom";
 import Article from "../Article/Article";
 
-const Articles = ({ articles, history }) => {
+const Articles = ({ articles, baseIndex }) => {
   const { user } = useContext(AuthContext);
   const [checkboxes, setCheckboxes] = useState({});
 
@@ -38,7 +37,7 @@ const Articles = ({ articles, history }) => {
               article={el}
               currentId={user ? user._id : null}
               checked={Boolean(checkboxes[el._id])}
-              index={index}
+              index={baseIndex + index}
               handleChange={handleChange}
             />
           </li>
@@ -49,4 +48,4 @@ const Articles = ({ articles, history }) => {
   );
 };
 
-export default withRouter(Articles);
+export default Articles;

@@ -20,7 +20,7 @@ const Article = ({ currentId, article, checked, index, handleChange }) => {
         />
       ) : null}
       <div>
-        <span>{index + 1}. </span>
+        <span>{index}. </span>
         <Link
           to={`/articles/${article._id}`}
           style={{ fontWeight: isMy() ? "bold" : "normal" }}
