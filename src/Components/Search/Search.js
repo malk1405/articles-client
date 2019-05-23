@@ -8,8 +8,8 @@ import { FormContext } from "../../Context/form";
 import Buttons from "../Pagination/Buttons";
 
 const limits = [3, 6, 9, 12, 15];
-const getPageName = (search, buttons) =>
-  getParameters(search).page || Object.keys(buttons)[0];
+const getType = (search, buttons) =>
+  getParameters(search).type || Object.keys(buttons)[0];
 
 const getInitLimit = search => +getParameters(search).limit || limits[0];
 
@@ -49,14 +49,14 @@ const Search = ({ location: { search }, history }) => {
   );
 
   const handlePush = ({ target: { name } }) => {
-    history.push(modifyQuery(search, { page: name }));
+    history.push(modifyQuery(search, { type: name }));
   };
 
   const onSubmit = values => {
     history.push(modifyQuery(search, values));
   };
 
-  const pageName = data ? getPageName(search, data.buttons) : "";
+  const pageName = data ? getType(search, data.buttons) : "";
 
   const main = () => {
     switch (pageName) {
