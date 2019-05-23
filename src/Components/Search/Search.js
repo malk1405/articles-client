@@ -13,6 +13,8 @@ const getPageName = (search, buttons) =>
 
 const getInitLimit = search => getParameters(search).limit || limits[0];
 
+const getCurrentPage = search => +getParameters(search).pageNumber || 1;
+
 const Search = ({ location: { search }, history }) => {
   const [data, setData] = useState();
   const [limit, setLimit] = useState(getInitLimit(search));
@@ -105,7 +107,11 @@ const Search = ({ location: { search }, history }) => {
           <option key={el}>{el}</option>
         ))}
       </select>
-      <Buttons pages={getPageNumber(data.buttons[pageName].number)} />
+      <Buttons
+        pages={getPageNumber(data.buttons[pageName].number)}
+        url={modifyQuery(search, { pageNumber: "" }) + "&pageNumber="}
+        currentPage={getCurrentPage(search)}
+      />
       {main()}
     </>
   );

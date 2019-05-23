@@ -1,41 +1,27 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
-import {
-  getParameters,
-  getTokens,
-  createQueryFromTokens
-} from "../../utils/query";
+import { Link } from "react-router-dom";
 
 const normalizeCurrentPage = (currentPage, pages) => {
-  if (Number.isNaN(currentPage) || currentPage <= 1) return 1;
-  if (currentPage >= pages) return pages;
-  return currentPage;
+  if (!currentPage || currentPage <= 1) return 1;
+  return Math.min(currentPage, pages);
 };
 
-const Buttons = ({ pages, location: { search, pathname } }) => {
+const Buttons = ({ pages, currentPage, url }) => {
   if (typeof pages !== "number" || pages <= 1) return null;
-
-  const currentPage = normalizeCurrentPage(
-    +getParameters(search).pageNumber,
-    pages
-  );
+  const current = normalizeCurrentPage(currentPage, pages);
   const buttons = [{ key: "first", value: 1 }];
-  if (currentPage > 3) buttons.push({ key: "1...", value: "..." });
-  if (currentPage > 2) buttons.push({ key: "prev", value: currentPage - 1 });
-  if (currentPage > 1) buttons.push({ key: "current", value: currentPage });
-  if (currentPage < pages - 1)
-    buttons.push({ key: "next", value: currentPage + 1 });
-  if (currentPage < pages - 2) buttons.push({ key: "2...", value: "..." });
-  if (currentPage < pages) buttons.push({ key: "last", value: pages });
-  const query = createQueryFromTokens(
-    getTokens(search).filter(([name]) => name !== "pageNumber")
-  );
+  if (current > 3) buttons.push({ key: "1...", value: "..." });
+  if (current > 2) buttons.push({ key: "prev", value: current - 1 });
+  if (current > 1) buttons.push({ key: "current", value: current });
+  if (current < pages - 1) buttons.push({ key: "next", value: current + 1 });
+  if (current < pages - 2) buttons.push({ key: "2...", value: "..." });
+  if (current < pages) buttons.push({ key: "last", value: pages });
   return buttons.map(({ key, value }) => {
     return typeof value === "number" ? (
       <Link
         key={key}
-        to={pathname + query + "&pageNumber=" + value}
-        style={{ fontWeight: value === currentPage ? "bold" : "normal" }}
+        to={url + value}
+        style={{ fontWeight: value === current ? "bold" : "normal" }}
       >
         {value}
       </Link>
@@ -45,4 +31,4 @@ const Buttons = ({ pages, location: { search, pathname } }) => {
   });
 };
 
-export default withRouter(Buttons);
+export default Buttons;
