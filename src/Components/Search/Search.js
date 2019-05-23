@@ -18,13 +18,24 @@ const getCurrentPage = search => +getParameters(search).pageNumber || 1;
 const getBaseIndex = (limit, currentPage) =>
   limit ? limit * (currentPage - 1) + 1 : 1;
 
+const getPageNumber = (number, limit) =>
+  number && limit ? Math.ceil(number / limit) : 1;
+
 const Search = ({ location: { search }, history }) => {
   const [data, setData] = useState();
   const [limit, setLimit] = useState(getInitLimit(search));
   const [baseIndex, setBaseIndex] = useState(1);
   const onSuccess = ({ data }) => {
-    setBaseIndex(getBaseIndex(limit, getCurrentPage(search)));
-    setData(data);
+    const type = getType(search, data.buttons);
+    const pages = getPageNumber(data.buttons[type].number, limit);
+    if (getCurrentPage(search) > pages)
+      history.push(
+        modifyQuery(search, { pageNumber: pages === 1 ? "" : pages })
+      );
+    else {
+      setBaseIndex(getBaseIndex(limit, getCurrentPage(search)));
+      setData(data);
+    }
   };
   const { setUrl, setIsFetching } = useAxios({ onSuccess });
   useEffect(
@@ -73,9 +84,6 @@ const Search = ({ location: { search }, history }) => {
     setLimit(+value);
   };
 
-  const getPageNumber = number =>
-    number && limit ? Math.ceil(number / limit) : 1;
-
   if (typeof data !== "object") return null;
   return (
     <>
@@ -116,7 +124,7 @@ const Search = ({ location: { search }, history }) => {
         ))}
       </select>
       <Buttons
-        pages={getPageNumber(data.buttons[pageName].number)}
+        pages={getPageNumber(data.buttons[pageName].number, limit)}
         url={modifyQuery(search, { pageNumber: "" }) + "&pageNumber="}
         currentPage={getCurrentPage(search)}
       />
