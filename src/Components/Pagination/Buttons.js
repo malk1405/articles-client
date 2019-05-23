@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import {
-  getTokensObject,
-  getTokensArray,
-  createQueryFromArray
+  getParameters,
+  getTokens,
+  createQueryFromTokens
 } from "../../utils/query";
 
 const normalizeCurrentPage = (currentPage, pages) => {
@@ -16,7 +16,7 @@ const Buttons = ({ pages, location: { search, pathname } }) => {
   if (typeof pages !== "number" || pages <= 1) return null;
 
   const currentPage = normalizeCurrentPage(
-    +getTokensObject(search).pageNumber,
+    +getParameters(search).pageNumber,
     pages
   );
   const buttons = [{ key: "first", value: 1 }];
@@ -27,8 +27,8 @@ const Buttons = ({ pages, location: { search, pathname } }) => {
     buttons.push({ key: "next", value: currentPage + 1 });
   if (currentPage < pages - 2) buttons.push({ key: "2...", value: "..." });
   if (currentPage < pages) buttons.push({ key: "last", value: pages });
-  const query = createQueryFromArray(
-    getTokensArray(search).filter(([name]) => name !== "pageNumber")
+  const query = createQueryFromTokens(
+    getTokens(search).filter(([name]) => name !== "pageNumber")
   );
   return buttons.map(({ key, value }) => {
     return typeof value === "number" ? (

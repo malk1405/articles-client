@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useAxios from "../../hooks/useAxios";
-import {
-  getTokensArray,
-  createQueryFromArray,
-  getTokensObject
-} from "../../utils/query";
+import { getParameters, modifyQuery } from "../../utils/query";
 import Articles from "../Articles/Articles";
 import Authors from "../Authors/Authors";
 import Form from "../Form/Form";
@@ -12,16 +8,10 @@ import { FormContext } from "../../Context/form";
 import Buttons from "../Pagination/Buttons";
 
 const limits = [3, 6, 9, 12, 15];
-const getPageName = (tokens, buttons) => {
-  const page = tokens.find(([name]) => name === "page");
-  if (!page || !buttons[page[1]]) return Object.keys(buttons)[0];
-  return page[1];
-};
+const getPageName = (search, buttons) =>
+  getParameters(search).page || Object.keys(buttons)[0];
 
-const getInitLimit = search => {
-  let tokens = getTokensObject(search);
-  return tokens.limit || limits[0];
-};
+const getInitLimit = search => getParameters(search).limit || limits[0];
 
 const Search = ({ location: { search }, history }) => {
   const [data, setData] = useState();
@@ -43,35 +33,23 @@ const Search = ({ location: { search }, history }) => {
     [search]
   );
 
-  useEffect(() => {
-    let tokens = getTokensObject(search);
-
-    tokens.limit = limit;
-    tokens = Object.keys(tokens)
-      .map(el => [el, tokens[el]])
-      .filter(([, value]) => value);
-    history.push(createQueryFromArray(tokens));
-  }, [limit]);
+  useEffect(
+    () => {
+      history.push(modifyQuery(search, { limit }));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [limit]
+  );
 
   const handlePush = ({ target: { name } }) => {
-    let tokens = getTokensArray(search).filter(([name]) => name !== "page");
-    tokens.push(["page", name]);
-
-    history.push(createQueryFromArray(tokens));
+    history.push(modifyQuery(search, { page: name }));
   };
 
   const onSubmit = values => {
-    let tokens = getTokensObject(search);
-    tokens = { ...tokens, ...values };
-    tokens = Object.keys(tokens)
-      .map(el => [el, tokens[el]])
-      .filter(([name, value]) => value);
-    history.push(createQueryFromArray(tokens));
+    history.push(modifyQuery(search, values));
   };
 
-  const pageName = data
-    ? getPageName(getTokensArray(search), data.buttons)
-    : "";
+  const pageName = data ? getPageName(search, data.buttons) : "";
 
   const main = () => {
     switch (pageName) {
@@ -82,14 +60,8 @@ const Search = ({ location: { search }, history }) => {
     }
   };
 
-  const handleLimitChange = ({ target: { name, value } }) => {
+  const handleLimitChange = ({ target: { value } }) => {
     setLimit(value);
-    let tokens = getTokensObject(search);
-    tokens.limit = value;
-    tokens = Object.keys(tokens)
-      .map(el => [el, tokens[el]])
-      .filter(([, value]) => value);
-    history.push(createQueryFromArray(tokens));
   };
 
   const getPageNumber = number => (number ? Math.ceil(number / limit) : 1);
