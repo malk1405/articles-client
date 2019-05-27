@@ -4,7 +4,7 @@ import "./articles.css";
 import useAxios from "../../hooks/useAxios";
 import Article from "../Article/Article";
 
-const Articles = ({ articles, baseIndex }) => {
+const Articles = ({ articles, baseIndex = 1 }) => {
   const { user } = useContext(AuthContext);
   const [checkboxes, setCheckboxes] = useState({});
 
