@@ -21,7 +21,14 @@ const Buttons = ({ pages, currentPage, url }) => {
       <Link
         key={key}
         to={url + value}
-        style={{ fontWeight: value === current ? "bold" : "normal" }}
+        style={{
+          fontWeight: value === current ? "bold" : "normal",
+          backgroundColor: value === current ? "#ccc" : "white",
+          color: value === current ? "blue" : "black",
+          border: "1px solid black",
+          padding: "0 0.5rem",
+          textDecoration: "none"
+        }}
       >
         {value}
       </Link>
