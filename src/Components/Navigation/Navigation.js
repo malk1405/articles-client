@@ -11,7 +11,10 @@ const Navigation = ({ history }) => {
   const { values, handleChange, handleSubmit } = useForm({
     initialValue: {},
     submit: () => {
-      const url = `/search?value=${values.search}`;
+      if (!values || typeof values.search !== "string") return;
+
+      let url = "/search";
+      if (values.search) url += `?value=${values.search}`;
 
       history.push(url);
     }
