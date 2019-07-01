@@ -32,12 +32,11 @@ const Articles = ({ articles, baseIndex = 1 }) => {
     <>
       <ol className="articles">
         {articles.map((el, index) => (
-          <li key={el._id} className="article">
+          <li key={el._id} value={baseIndex + index} className="article">
             <Article
               article={el}
               currentId={user ? user._id : null}
               checked={Boolean(checkboxes[el._id])}
-              index={baseIndex + index}
               handleChange={handleChange}
             />
           </li>

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import AuthorsList from "../AuthorsList/AuthorsList";
 
-const Article = ({ currentId, article, checked, index, handleChange }) => {
+const Article = ({ currentId, article, checked, handleChange }) => {
   const isMy = () => {
     return (
       article.authors.findIndex(({ authorId }) => authorId === currentId) >= 0
@@ -20,7 +20,6 @@ const Article = ({ currentId, article, checked, index, handleChange }) => {
         />
       ) : null}
       <div>
-        <span>{index}. </span>
         <Link
           to={`/articles/${article._id}`}
           style={{ fontWeight: isMy() ? "bold" : "normal" }}
