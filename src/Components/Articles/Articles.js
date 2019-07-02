@@ -30,9 +30,9 @@ const Articles = ({ articles, baseIndex = 1 }) => {
   };
   return (
     <>
-      <ol className="articles">
-        {articles.map((el, index) => (
-          <li key={el._id} value={baseIndex + index} className="article">
+      <ol className="articles" start={baseIndex}>
+        {articles.map(el => (
+          <li key={el._id} className="article">
             <Article
               article={el}
               currentId={user ? user._id : null}
